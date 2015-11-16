@@ -2,11 +2,15 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.*;
+import java.net.*;
 
 public class Client implements Runnable {
 
-	String hostname = "localhost";
-	String portNumber = "55511";
+	private static String hostname = "localhost";
+	private static int portNumber = 55511;
+	private static Socket socket;
+	private static PrintWriter out;
+	private static BufferedReader in;
 
 	public static void main(String[] args) {
 		Client client = new Client();
@@ -21,14 +25,17 @@ public class Client implements Runnable {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			// matches the operating system's look and feel
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {}
+		} catch (ClassNotFoundException | InstantiationException |
+			IllegalAccessException | UnsupportedLookAndFeelException ex) {}
 		setupPanels();
 		setupFrame();
+		connect();
 	}
 
 	private void setupFrame() {
 		JFrame window = new JFrame("Car Sharing");
-		window.setIconImage(Toolkit.getDefaultToolkit().getImage("graphics/icon.png"));
+		window.setIconImage(Toolkit.getDefaultToolkit()
+			.getImage("graphics/icon.png"));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		populateFrame(window.getContentPane());
 		window.pack();
@@ -45,6 +52,19 @@ public class Client implements Runnable {
 
 	private void populateFrame(Container frame) {
 
+	}
+
+	private void connect() {
+		try {
+			socket = new Socket(hostname, portNumber);
+			// this socket is used to connect to the server
+			out = new PrintWriter(socket.getOutputStream(), true);
+			// this stream is used to write messages to the server
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			// this stream is used to read incoming messages from the server
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 }
