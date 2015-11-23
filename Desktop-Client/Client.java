@@ -16,7 +16,7 @@ public class Client implements Runnable {
 		Client client = new Client();
 	}
 
-	public void Client() {
+	public Client() {
 		Thread thread = new Thread(this);
 		thread.start();
 	}
