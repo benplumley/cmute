@@ -1,7 +1,7 @@
 public class Ride {
 
-	private MapPoint startPoint = new MapPoint();
-	private MapPoint endPoint = new MapPoint();
+	private MapPoint startPoint;
+	private MapPoint endPoint;
 	private DateTime dateTime = new DateTime();
 	private char[] repeatingDays;
 	private byte numberOfSeats;
