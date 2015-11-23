@@ -1,11 +1,14 @@
-public class Map {
+import java.io.File;
+import javax.swing.*;
+import javax.imageio.ImageIO;
+import java.io.IOException;
 
-	private JLabel mapImage;
+public class Map extends JLabel {
 
 	public Map() {
-		String filePath = "maps/bath.png"
+		String filePath = "maps/bath.png";
 		try {
-			mapImage = new JLabel(new ImageIcon(ImageIO.read(new File(filePath))));
+			this.setIcon(new ImageIcon(ImageIO.read(new File(filePath))));
 		} catch (IOException e) {
 			System.err.println("File missing: " + filePath);
 		}

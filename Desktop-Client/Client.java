@@ -11,6 +11,7 @@ public class Client implements Runnable {
 	private static Socket socket;
 	private static PrintWriter out;
 	private static BufferedReader in;
+	private Map map = new Map();
 
 	public static void main(String[] args) {
 		Client client = new Client();
@@ -51,7 +52,7 @@ public class Client implements Runnable {
 	}
 
 	private void populateFrame(Container frame) {
-
+		frame.add(map);
 	}
 
 	private void connect() {
