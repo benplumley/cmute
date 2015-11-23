@@ -5,26 +5,30 @@
  * while emulating the the client class.
  */
 import java.awt.*;
+
 import javax.swing.*;
+
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 
+@SuppressWarnings("unused")
 public class Server implements Runnable {
     private int portNumber;
-    private string hostName;
+    private String hostName;
 
-    public static void main(String[] args) {
+    public void main(String[] args) {
         Server theServer = new Server();
         portNumber = Integer.parseInt(args[0]);
     }
     
-    public void Server(){
-        Thread thread = new THread(this);
-        thread.start;
+    public Server(){
+        Thread thread = new Thread(this);
+        thread.start();
     }
     
-    public void run(){
+    @SuppressWarnings("resource")
+	public void run(){
         try {
             ServerSocket serverSocket = new ServerSocket(portNumber);
             
