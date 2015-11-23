@@ -19,7 +19,13 @@ public class Server implements Runnable {
 
     public void main(String[] args) {
         Server theServer = new Server();
-        portNumber = Integer.parseInt(args[0]);
+        try{
+        	portNumber = Integer.parseInt(args[0]);
+        	hostName = args[1];
+        } catch (Exception e) {
+        	System.err.println("M8 u messed up the args");
+        	System.err.println(e.getMessage());
+        }
     }
     
     public Server(){
@@ -34,10 +40,8 @@ public class Server implements Runnable {
             
             while (true)
             {
-                Socket clientSocket = serverSocket.accept();
-                //ServerClientThread serverClientThread = new ServerClientThread(serverSocket.accept());
-                //accept a connection;
-                //create a thread to deal with the client;
+                ServerClientThread clientThread = new ServerClientThread(serverSocket.accept());
+                clientThread.start();
             }
             
         } catch (IOException e) {
