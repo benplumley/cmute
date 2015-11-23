@@ -2,7 +2,7 @@ public class MapPoint {
 
 	private int x, y;
 
-	public void MapPoint(localX, localY) {
+	public MapPoint(int localX, int localY) {
 		x = localX;
 		y = localY;
 	}
