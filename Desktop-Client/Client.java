@@ -4,7 +4,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 
-public class Client implements Runnable {
+public class Client extends JPanel implements Runnable {
 
 	private static String hostname = "localhost";
 	private static int portNumber = 55511;
@@ -52,7 +52,19 @@ public class Client implements Runnable {
 	}
 
 	private void populateFrame(Container frame) {
-		frame.add(map);
+		frame.setLayout(new GridBagLayout());
+		JPanel mapView = new JPanel();
+		mapView.add(map);
+		GridBagConstraints layoutConstraints = new GridBagConstraints();
+		layoutConstraints.gridx = 0;
+		layoutConstraints.gridy = 0;
+		layoutConstraints.gridheight = 1;
+		layoutConstraints.gridwidth = 4;
+		frame.add(mapView, layoutConstraints);
+		layoutConstraints.gridx = 0;
+		layoutConstraints.gridy = 1;
+		layoutConstraints.gridheight = 1;
+		layoutConstraints.gridwidth = 1;
 	}
 
 	private void connect() {
