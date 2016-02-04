@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
+import java.util.Date;
 
 public class Client extends JPanel implements Runnable {
 
@@ -48,7 +49,10 @@ public class Client extends JPanel implements Runnable {
 	}
 
 	private void setupPanels() {
-
+		// TODO time and date picker
+		// slider for time range
+		// slider for start radius
+		// slider for end radius
 	}
 
 	private void populateFrame(Container frame) {
@@ -65,6 +69,12 @@ public class Client extends JPanel implements Runnable {
 		layoutConstraints.gridy = 1;
 		layoutConstraints.gridheight = 1;
 		layoutConstraints.gridwidth = 1;
+
+		JSpinner timeSpinner = new JSpinner( new SpinnerDateModel() );
+		JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
+		timeSpinner.setEditor(timeEditor);
+		timeSpinner.setValue(new Date()); // will only show the current time
+		frame.add(timeSpinner, layoutConstraints);
 	}
 
 	private void connect() {
