@@ -42,7 +42,7 @@ public class Client extends JPanel implements Runnable {
 		window.pack();
 		window.setLocationByPlatform(true);
 		window.setVisible(true);
-		Dimension windowSize = new Dimension(400, 200);
+		Dimension windowSize = new Dimension(800, 500);
 		window.setSize(windowSize);
 		window.setResizable(true);
 	}
