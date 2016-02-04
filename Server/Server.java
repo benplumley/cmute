@@ -27,12 +27,12 @@ public class Server implements Runnable {
         	System.err.println(e.getMessage());
         }
     }
-    
+
     public Server(){
         Thread thread = new Thread(this);
         thread.start();
     }
-    
+
     @SuppressWarnings("resource")
 	public void run(){
         try {
@@ -43,10 +43,10 @@ public class Server implements Runnable {
                 ServerClientThread clientThread = new ServerClientThread(serverSocket.accept());
                 clientThread.start();
             }
-            
+
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
     }
-    
+
 }
