@@ -17,18 +17,27 @@ public class Server implements Runnable {
     private int portNumber;
     private String hostName;
 
-    public void main(String[] args) {
-        Server theServer = new Server();
-        try{
+    public static void main(String[] args) {
+        Server theServer = new Server(args);
+		// start server with Server portnumber hostname
+		
+        // try{
+        // 	portNumber = Integer.parseInt(args[0]);
+        // 	hostName = args[1];
+        // } catch (Exception e) {
+        // 	System.err.println("M8 u messed up the args");
+        // 	System.err.println(e.getMessage());
+        // }
+    }
+
+    public Server(String[] args){
+		try{
         	portNumber = Integer.parseInt(args[0]);
         	hostName = args[1];
         } catch (Exception e) {
         	System.err.println("M8 u messed up the args");
         	System.err.println(e.getMessage());
         }
-    }
-
-    public Server(){
         Thread thread = new Thread(this);
         thread.start();
     }
@@ -37,7 +46,7 @@ public class Server implements Runnable {
 	public void run(){
         try {
             ServerSocket serverSocket = new ServerSocket(portNumber);
-            
+
             while (true)
             {
                 ServerClientThread clientThread = new ServerClientThread(serverSocket.accept());
