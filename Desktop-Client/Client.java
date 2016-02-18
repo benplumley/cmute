@@ -24,11 +24,11 @@ public class Client extends JPanel implements Runnable {
 	}
 
 	public void run() {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			// matches the operating system's look and feel
-		} catch (ClassNotFoundException | InstantiationException |
-			IllegalAccessException | UnsupportedLookAndFeelException ex) {}
+		// try {
+		// 	UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		// 	// matches the operating system's look and feel
+		// } catch (ClassNotFoundException | InstantiationException |
+		// 	IllegalAccessException | UnsupportedLookAndFeelException ex) {}
 		setupPanels();
 		setupFrame();
 		connect();
@@ -63,18 +63,47 @@ public class Client extends JPanel implements Runnable {
 		layoutConstraints.gridx = 0;
 		layoutConstraints.gridy = 0;
 		layoutConstraints.gridheight = 1;
-		layoutConstraints.gridwidth = 4;
-		frame.add(mapView, layoutConstraints);
+		layoutConstraints.gridwidth = 2;
+		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
+		layoutConstraints.weightx = 0.5;
+		JButton from = new JButton("FROM UNI");
+		from.setBackground(new Color(198, 0, 167));
+		from.setForeground(Color.WHITE);
+        from.setFocusPainted(false);
+		from.setRolloverEnabled(false);
+		from.setBorderPainted(false);
+		frame.add(from, layoutConstraints);
+
+		layoutConstraints.gridx = 2;
+		layoutConstraints.gridy = 0;
+		layoutConstraints.gridheight = 1;
+		layoutConstraints.gridwidth = 2;
+		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
+		layoutConstraints.weightx = 0.5;
+		JButton to = new JButton("TO UNI");
+		to.setBackground(new Color(255, 116, 0));
+		to.setForeground(Color.WHITE);
+        to.setFocusPainted(false);
+		to.setRolloverEnabled(false);
+		to.setBorderPainted(false);
+		frame.add(to, layoutConstraints);
+
 		layoutConstraints.gridx = 0;
 		layoutConstraints.gridy = 1;
 		layoutConstraints.gridheight = 1;
-		layoutConstraints.gridwidth = 1;
+		layoutConstraints.gridwidth = 4;
+		frame.add(mapView, layoutConstraints);
 
-		JSpinner timeSpinner = new JSpinner( new SpinnerDateModel() );
-		JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
-		timeSpinner.setEditor(timeEditor);
-		timeSpinner.setValue(new Date()); // will only show the current time
-		frame.add(timeSpinner, layoutConstraints);
+		// layoutConstraints.gridx = 0;
+		// layoutConstraints.gridy = 2;
+		// layoutConstraints.gridheight = 1;
+		// layoutConstraints.gridwidth = 1;
+		//
+		// JSpinner timeSpinner = new JSpinner( new SpinnerDateModel() );
+		// JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
+		// timeSpinner.setEditor(timeEditor);
+		// timeSpinner.setValue(new Date()); // will only show the current time
+		// frame.add(timeSpinner, layoutConstraints);
 	}
 
 	private void connect() {
