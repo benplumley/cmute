@@ -31,15 +31,15 @@ public class ClientConnection {
 
     public Ride[] getMatchingRides(Boolean isToUni, Date dateAndTime, int timeTolerance, MapPoint startLocation, int locationTolerance) {
         Object rideQuery = new Query(isToUni, dateAndTime, timeTolerance, startLocation, locationTolerance);
+        Ride[] response = null;
         try {
             out.writeObject(rideQuery);
-        } catch (IOException e) {
-            System.err.println("Could not send query to server:");
+            response = (Ride[]) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error requesting matching rides:");
             System.err.println(e.getMessage());
-
         }
-
-        return null;
+        return response;
     }
 
 }
