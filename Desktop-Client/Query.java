@@ -1,3 +1,6 @@
+// Query class should be accessible to both client and server so that the same
+// code is used for serialisation as deserialisation.
+
 import java.sql.Date;
 
 public class Query implements java.io.Serializable {
@@ -14,6 +17,11 @@ public class Query implements java.io.Serializable {
         this.timeTolerance = timeTolerance;
         this.startLocation = startLocation;
         this.locationTolerance = locationTolerance;
+    }
+
+    public String createSQLString() {
+        String queryString = "SELECT * FROM rides WHERE"; // TODO correct where clause
+        return queryString;
     }
 
 }
