@@ -20,6 +20,8 @@ public class Query implements java.io.Serializable {
     }
 
     public String createSQLString() {
+        //Date startTime = dateAndTime
+        // TODO decide between sqlite and mysql. decide between java.sql.date and java.date (java 8).
         String queryString = "SELECT * FROM rides WHERE"; // TODO correct where clause
         return queryString;
     }
