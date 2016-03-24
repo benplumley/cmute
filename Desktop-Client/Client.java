@@ -9,10 +9,8 @@ public class Client extends JPanel implements Runnable {
 
 	private static String hostname = "localhost";
 	private static int portNumber = 55511;
-	private static Socket socket;
-	private static PrintWriter out;
-	private static BufferedReader in;
 	private Map map = new Map();
+    private ClientConnection connection;
 
 	public static void main(String[] args) {
 		Client client = new Client();
@@ -31,7 +29,7 @@ public class Client extends JPanel implements Runnable {
 		// 	IllegalAccessException | UnsupportedLookAndFeelException ex) {}
 		setupPanels();
 		setupFrame();
-		connect();
+		connection = new ClientConnection(hostname, portNumber);
 	}
 
 	private void setupFrame() {
@@ -106,17 +104,6 @@ public class Client extends JPanel implements Runnable {
 		// frame.add(timeSpinner, layoutConstraints);
 	}
 
-	private void connect() {
-		try {
-			socket = new Socket(hostname, portNumber);
-			// this socket is used to connect to the server
-			out = new PrintWriter(socket.getOutputStream(), true);
-			// this stream is used to write messages to the server
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			// this stream is used to read incoming messages from the server
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
-		}
-	}
+
 
 }
