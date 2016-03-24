@@ -5,11 +5,11 @@ import java.sql.Date;
 
 public class Query implements java.io.Serializable {
 
-    Boolean isToUni;
-    Date dateAndTime;
-    int timeTolerance;
-    MapPoint startLocation;
-    int locationTolerance;
+    private Boolean isToUni;
+    private Date dateAndTime;
+    private int timeTolerance;
+    private MapPoint startLocation;
+    private int locationTolerance;
 
     public Query(Boolean isToUni, Date dateAndTime, int timeTolerance, MapPoint startLocation, int locationTolerance) {
         this.isToUni = isToUni;
