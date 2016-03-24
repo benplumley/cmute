@@ -1,4 +1,4 @@
-public class MapPoint {
+public class MapPoint implements java.io.Serializable {
 
 	private int x, y;
 
