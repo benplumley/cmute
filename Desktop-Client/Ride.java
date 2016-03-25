@@ -10,12 +10,12 @@ public class Ride implements java.io.Serializable {
 	private byte seatsRemaining;
 
 	public Ride(MapPoint startPoint, MapPoint endPoint, Date dateTime, char[] repeatingDays, byte numberOfSeats, byte seatsRemaining) {
-		startPoint = this.startPoint;
-		endPoint = this.endPoint;
-		dateTime = this.dateTime;
-		repeatingDays = this.repeatingDays;
-		numberOfSeats = this.numberOfSeats;
-		seatsRemaining = this.seatsRemaining;
+		this.startPoint = startPoint;
+		this.endPoint = endPoint;
+		this.dateTime = dateTime;
+		this.repeatingDays = repeatingDays;
+		this.numberOfSeats = numberOfSeats;
+		this.seatsRemaining = seatsRemaining;
 	}
 
 
