@@ -17,6 +17,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
     private MapPoint startLocation;
     private int locationTolerance;
     private Ride[] currentRides;
+    private JPanel mapView;
 
 	public static void main(String[] args) {
 		Client client = new Client();
@@ -61,7 +62,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
 
 	private void populateFrame(Container frame) {
 		frame.setLayout(new GridBagLayout());
-		JPanel mapView = new JPanel();
+		mapView = new JPanel(null);
 		mapView.add(map);
 		GridBagConstraints layoutConstraints = new GridBagConstraints();
 		layoutConstraints.gridx = 0;
@@ -124,14 +125,23 @@ public class Client extends JPanel implements ActionListener, Runnable {
     }
 
     private void updateRides() {
-        currentRides = getMatchingRides(isToUni, dateAndTime, timeTolerance, startLocation, locationTolerance);
+        currentRides = connection.getMatchingRides(isToUni, dateAndTime, timeTolerance, startLocation, locationTolerance);
         updateMap();
     }
 
     private void updateMap() {
+        ImageIcon pinIcon;
+        if (isToUni) {
+            pinIcon = new ImageIcon("graphics/orangepin.png");
+        } else {
+            pinIcon = new ImageIcon("graphics/purplepin.png");
+        }
         for (Ride thisRide : currentRides) {
-            MapPoint rideLocation = thisRide.getLocation;
-            // TODO make a new clickable jpanel with the appropiate pin colour at the coordinates of rideLocation
+            MapPoint rideLocation = thisRide.getLocation();
+            JLabel pinLabel = new JLabel(pinIcon);
+            mapView.add(pinLabel);
+            pinLabel.setLocation(rideLocation.getX() - 5, rideLocation.getY() - 16);
+            // TODO change 5 and 16 to constants. they are the relative location of the point of the pin to its top left corner
         }
     }
 
