@@ -16,6 +16,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
     private int timeTolerance;
     private MapPoint startLocation;
     private int locationTolerance;
+    private Ride[] currentRides;
 
 	public static void main(String[] args) {
 		Client client = new Client();
@@ -119,6 +120,18 @@ public class Client extends JPanel implements ActionListener, Runnable {
             case "FROM UNI":
                 isToUni = false;
                 break;
+        }
+    }
+
+    private void updateRides() {
+        currentRides = getMatchingRides(isToUni, dateAndTime, timeTolerance, startLocation, locationTolerance);
+        updateMap();
+    }
+
+    private void updateMap() {
+        for (Ride thisRide : currentRides) {
+            MapPoint rideLocation = thisRide.getLocation;
+            // TODO make a new clickable jpanel with the appropiate pin colour at the coordinates of rideLocation
         }
     }
 

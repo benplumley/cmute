@@ -20,5 +20,9 @@ public class Ride implements java.io.Serializable {
 		this.seatsRemaining = seatsRemaining;
 	}
 
+    public MapPoint getLocation() {
+        return startLocation;
+    }
+
 
 }
