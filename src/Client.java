@@ -5,12 +5,17 @@ import java.io.*;
 import java.net.*;
 import java.util.Date;
 
-public class Client extends JPanel implements Runnable {
+public class Client extends JPanel implements ActionListener, Runnable {
 
 	private static String hostname = "localhost";
 	private static int portNumber = 55511;
 	private Map map = new Map();
     private ClientConnection connection;
+    private Boolean isToUni;
+    private DateTime dateAndTime;
+    private int timeTolerance;
+    private MapPoint startLocation;
+    private int locationTolerance;
 
 	public static void main(String[] args) {
 		Client client = new Client();
@@ -70,6 +75,7 @@ public class Client extends JPanel implements Runnable {
         from.setFocusPainted(false);
 		from.setRolloverEnabled(false);
 		from.setBorderPainted(false);
+        from.addActionListener(this);
 		frame.add(from, layoutConstraints);
 
 		layoutConstraints.gridx = 2;
@@ -84,6 +90,7 @@ public class Client extends JPanel implements Runnable {
         to.setFocusPainted(false);
 		to.setRolloverEnabled(false);
 		to.setBorderPainted(false);
+        to.addActionListener(this);
 		frame.add(to, layoutConstraints);
 
 		layoutConstraints.gridx = 0;
@@ -104,6 +111,15 @@ public class Client extends JPanel implements Runnable {
 		// frame.add(timeSpinner, layoutConstraints);
 	}
 
-
+    public void actionPerformed(ActionEvent e) {
+        switch (e.getActionCommand()) {
+            case "TO UNI":
+                isToUni = true;
+                break;
+            case "FROM UNI":
+                isToUni = false;
+                break;
+        }
+    }
 
 }
