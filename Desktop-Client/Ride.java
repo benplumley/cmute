@@ -2,18 +2,16 @@
 // repeated every Tuesday and Friday. SQL can store the decimal value (36) which
 // is converted back to binary to get the days.
 
-import java.sql.Date;
-
 public class Ride implements java.io.Serializable {
 
     private Boolean isToUni;
-    private Date dateAndTime;
+    private DateTime dateAndTime;
     private MapPoint startLocation;
 	private byte repeatingDays;
 	private byte numberOfSeats;
 	private byte seatsRemaining;
 
-	public Ride(Boolean isToUni, MapPoint startLocation, Date dateAndTime, byte repeatingDays, byte numberOfSeats, byte seatsRemaining) {
+	public Ride(Boolean isToUni, MapPoint startLocation, DateTime dateAndTime, byte repeatingDays, byte numberOfSeats, byte seatsRemaining) {
 		this.startLocation = startLocation;
 		this.dateAndTime = dateAndTime;
 		this.repeatingDays = repeatingDays;

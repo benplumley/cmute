@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.*;
-import java.sql.Date;
 
 public class ClientConnection {
 
@@ -29,7 +28,7 @@ public class ClientConnection {
         }
     }
 
-    public Ride[] getMatchingRides(Boolean isToUni, Date dateAndTime, int timeTolerance, MapPoint startLocation, int locationTolerance) {
+    public Ride[] getMatchingRides(Boolean isToUni, DateTime dateAndTime, int timeTolerance, MapPoint startLocation, int locationTolerance) {
         Object rideQuery = new Query(isToUni, dateAndTime, timeTolerance, startLocation, locationTolerance);
         Ride[] response = null;
         try {
