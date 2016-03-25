@@ -4,6 +4,8 @@
  * This class is supposed to present a user on the server
  * side of things.
  */
+package Server;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -16,10 +18,10 @@ public class ServerClientThread implements Runnable {
 	private Socket myServerSocket;
 	
 	private ObjectInputStream inFromClient;
-	private ToServerObject readObject;
+//	private ToServerObject readObject;
 	
 	private ObjectOutputStream outToClient;
-	private ToClientObject writeObject;
+//	private ToClientObject writeObject;
 	
 	
 	public ServerClientThread(Socket accept) {

@@ -1,5 +1,9 @@
 // Query class should be accessible to both client and server so that the same
 // code is used for serialisation as deserialisation.
+package Protocol;
+
+import DesktopClient.DateTime;
+import DesktopClient.MapPoint;
 
 public class Query implements java.io.Serializable {
 

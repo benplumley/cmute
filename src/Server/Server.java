@@ -4,6 +4,8 @@
  * Okay I tried to create the foundations of the server class
  * while emulating the the client class.
  */
+package Server;
+
 import java.io.*;
 import java.net.*;
 
