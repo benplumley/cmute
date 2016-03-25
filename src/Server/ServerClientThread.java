@@ -4,22 +4,29 @@
  * This class is supposed to present a user on the server
  * side of things.
  */
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+import Protocol.Query;
+import Protocol.Ride;
+
 
 public class ServerClientThread implements Runnable {
 	private Socket myServerSocket;
-	private BufferedReader inFromClient;
-	private DataOutputStream outToClient;
-
+	
+	private ObjectInputStream inFromClient;
+	private ToServerObject readObject;
+	
+	private ObjectOutputStream outToClient;
+	private ToClientObject writeObject;
+	
+	
 	public ServerClientThread(Socket accept) {
 		myServerSocket = accept;
         try {
-        	inFromClient = new BufferedReader(new InputStreamReader(myServerSocket.getInputStream()));
-			outToClient = new DataOutputStream(myServerSocket.getOutputStream());
+        	inFromClient = new ObjectInputStream(myServerSocket.getInputStream());
+			outToClient = new ObjectOutputStream(myServerSocket.getOutputStream());
 		} catch (IOException e) {
             System.err.println(e.getMessage());
 		} finally {
@@ -33,8 +40,15 @@ public class ServerClientThread implements Runnable {
 	}
 	
 	public void run() {
-		// TODO
-		
+		Object inputObject; //Change this !!! TODO
+		try {
+			while((inputObject = inFromClient.readObject()) != null){
+//				inputObject.dealwithstuff
+			}
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	

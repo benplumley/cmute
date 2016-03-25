@@ -4,11 +4,6 @@
  * Okay I tried to create the foundations of the server class
  * while emulating the the client class.
  */
-import java.awt.*;
-
-import javax.swing.*;
-
-import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 
