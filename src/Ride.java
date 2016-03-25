@@ -1,7 +1,7 @@
 // repeatingDays should take the form eg 0b0100100 to mean a ride that is
 // repeated every Tuesday and Friday. SQL can store the decimal value (36) which
 // is converted back to binary to get the days.
-//Make a class which converts byte to repeating days?
+// Make a class which converts byte to repeating days?
 
 public class Ride implements java.io.Serializable {
 

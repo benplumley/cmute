@@ -14,10 +14,10 @@ public class ServerClientThread implements Runnable {
 	private Socket myServerSocket;
 
 	private ObjectInputStream inFromClient;
-//	private ToServerObject readObject;
+	private Query inputQuery;
 
 	private ObjectOutputStream outToClient;
-//	private ToClientObject writeObject;
+//	private Ride outputRides;
 
 
 	public ServerClientThread(Socket accept) {
@@ -27,25 +27,23 @@ public class ServerClientThread implements Runnable {
 			outToClient = new ObjectOutputStream(myServerSocket.getOutputStream());
 		} catch (IOException e) {
             System.err.println(e.getMessage());
-		} finally {
-			this.close();
 		}
 	}
 
 	public void start() {
-		//Initialise protocol here!
+		//Initialise protocol here?
 
 	}
 
 	public void run() {
-		Object inputObject; //Change this !!! TODO
 		try {
-			while((inputObject = inFromClient.readObject()) != null){
-//				inputObject.dealwithstuff
+			while((inputQuery = (Query) inFromClient.readObject()) != null){ //TODO is this valid???
+				processRequest(inputQuery);
 			}
 		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			this.close();
 		}
 	}
 
@@ -60,14 +58,14 @@ public class ServerClientThread implements Runnable {
 		}
 	}
 
-	public void processRequest(String request){
-		//Create protocol communication class?
+	public void processRequest(Query query){
+		//JDBC stuff
+//		sendRequestResults(stuff);
 	}
 
-	public void sendRequestResults(String requestResult){
-		//TODO
+	public void sendRequestResults(Ride requestResult){
 		try {
-			outToClient.writeUTF(requestResult);
+			outToClient.writeObject(requestResult);
 			outToClient.flush();
 		} catch (IOException e) {
 			//Shit got fucked

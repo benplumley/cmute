@@ -17,7 +17,7 @@ public class Query implements java.io.Serializable {
         this.locationTolerance = locationTolerance;
     }
 
-    public String createSQLString() {
+    public String toSQLString() {
         long startTime = dateAndTime.subtractMinutes(timeTolerance).getDateTime();
         long endTime = dateAndTime.addMinutes(timeTolerance).getDateTime();
 
