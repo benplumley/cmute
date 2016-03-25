@@ -18,9 +18,15 @@ public class Query implements java.io.Serializable {
     }
 
     public String createSQLString() {
-        //Date startTime = dateAndTime
+        long startTime = dateAndTime.subtractMinutes(timeTolerance).getDateTime();
+        long endTime = dateAndTime.addMinutes(timeTolerance).getDateTime();
+
         // TODO decide between sqlite and mysql.
-        String queryString = "SELECT * FROM rides WHERE"; // TODO correct where clause
+        String queryString = "SELECT * FROM rides WHERE" +
+            " isToUni = " + isToUni +
+            " AND dateAndTime >= " + startTime +
+            " AND dateAndTime <= " + endTime;
+            // TODO location and tolerance in WHERE clause
         return queryString;
     }
 
