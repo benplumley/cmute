@@ -22,19 +22,34 @@ public class ServerClientThread implements Runnable {
 			outToClient = new DataOutputStream(myServerSocket.getOutputStream());
 		} catch (IOException e) {
             System.err.println(e.getMessage());
+		} finally {
+			this.close();
 		}
 	}
 	
 	public void start() {
-		// TODO
-	}
+		//Initialise protocol here!
 
-	public void run() {
-		// TODO
 	}
 	
-	public void dealWithRequest(String request){
-		//TODO
+	public void run() {
+		// TODO
+		
+	}
+
+	
+	public void close(){
+		try {
+			inFromClient.close();
+			outToClient.close();
+			myServerSocket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void processRequest(String request){
+		//Create protocol communication class?
 	}
 	
 	public void sendRequestResults(String requestResult){
@@ -45,7 +60,8 @@ public class ServerClientThread implements Runnable {
 		} catch (IOException e) {
 			//Shit got fucked
 			System.err.println(e.getMessage());
-			}
+		}
 	}
+
 
 }
