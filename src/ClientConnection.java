@@ -1,9 +1,5 @@
-package DesktopClient;
-
 import java.io.*;
 import java.net.*;
-import Protocol.*;
-
 
 public class ClientConnection {
 

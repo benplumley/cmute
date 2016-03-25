@@ -2,10 +2,6 @@
 // repeated every Tuesday and Friday. SQL can store the decimal value (36) which
 // is converted back to binary to get the days.
 //Make a class which converts byte to repeating days?
-package Protocol;
-
-import DesktopClient.DateTime;
-import DesktopClient.MapPoint;
 
 public class Ride implements java.io.Serializable {
 

@@ -4,26 +4,22 @@
  * This class is supposed to present a user on the server
  * side of things.
  */
-package Server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import Protocol.Query;
-import Protocol.Ride;
-
 
 public class ServerClientThread implements Runnable {
 	private Socket myServerSocket;
-	
+
 	private ObjectInputStream inFromClient;
 //	private ToServerObject readObject;
-	
+
 	private ObjectOutputStream outToClient;
 //	private ToClientObject writeObject;
-	
-	
+
+
 	public ServerClientThread(Socket accept) {
 		myServerSocket = accept;
         try {
@@ -35,12 +31,12 @@ public class ServerClientThread implements Runnable {
 			this.close();
 		}
 	}
-	
+
 	public void start() {
 		//Initialise protocol here!
 
 	}
-	
+
 	public void run() {
 		Object inputObject; //Change this !!! TODO
 		try {
@@ -53,7 +49,7 @@ public class ServerClientThread implements Runnable {
 		}
 	}
 
-	
+
 	public void close(){
 		try {
 			inFromClient.close();
@@ -63,11 +59,11 @@ public class ServerClientThread implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void processRequest(String request){
 		//Create protocol communication class?
 	}
-	
+
 	public void sendRequestResults(String requestResult){
 		//TODO
 		try {

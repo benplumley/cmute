@@ -4,7 +4,6 @@
  * Okay I tried to create the foundations of the server class
  * while emulating the the client class.
  */
-package Server;
 
 import java.io.*;
 import java.net.*;
@@ -24,13 +23,13 @@ public class Server {
         	portNumber = Integer.parseInt(args[0]);
         	hostName = args[1];
         	serverSocket = new ServerSocket(portNumber);
-        	
+
             while (true)
             {
                 ServerClientThread clientThread = new ServerClientThread(serverSocket.accept());
                 clientThread.start();
             }
-            
+
         } catch (Exception e) {
         	System.err.println("args: portnumber hostname");
         	System.err.println(e.getMessage());
@@ -39,7 +38,7 @@ public class Server {
         }
 
     }
-    
+
     public void close(){
     	try {
 			serverSocket.close();
