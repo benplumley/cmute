@@ -27,4 +27,8 @@ public class DateTime implements java.io.Serializable {
         return addMinutes(-1 * m);
     }
 
+    public long getDateTime() {
+        return epoch;
+    }
+
 }
