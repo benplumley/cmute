@@ -122,6 +122,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
                 isToUni = false;
                 break;
         }
+        updateRides();
     }
 
     private void updateRides() {
