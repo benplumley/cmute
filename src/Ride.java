@@ -25,5 +25,9 @@ public class Ride implements java.io.Serializable {
         return startLocation;
     }
 
+    public Boolean getIsToUni() {
+        return isToUni;
+    }
+
 
 }
