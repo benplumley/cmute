@@ -123,7 +123,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
                 isToUni = false;
                 break;
             case else:
-                int rideSelected = Integer.parseInt(actionPerformed);
+                Ride rideSelected = e.getSource().getRide();
                 // the user clicked a pin. The pin's text should be that ride's UUID, so rideSelected is now set to the selected ride's UUID
                 book(rideSelected);
         }
@@ -145,7 +145,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
         }
     }
 
-    private void book(int rideUUID) {
+    private void book(Ride ride) {
         Object[] options = {"Cancel", "Book this ride!"};
         int confirmed = JOptionPane.showOptionDialog(frame,
             "Ride details here",
@@ -156,7 +156,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
             options,
             options[2]);
         if (confirmed == JOptionPane.YES_OPTION) {
-            Boolean successful = connection.book(rideUUID);
+            Boolean successful = connection.book(ride);
         }
         if (successful) {
             JOptionPane.showMessageDialog(frame, "Your booking was successful.");

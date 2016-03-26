@@ -51,8 +51,8 @@ public class ClientConnection {
 		}
 	}
 
-    public Boolean book(int rideUUID) {
-        // TODO send a request to book the ride with this UUID
+    public Boolean book(Ride ride) {
+        // TODO send a request to book this ride
         return false;
     }
 
