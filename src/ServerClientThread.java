@@ -17,14 +17,14 @@ public class ServerClientThread implements Runnable {
 	private Query inputQuery;
 
 	private ObjectOutputStream outToClient;
-//	private Ride outputRides;
+	private Ride outputRides;
 
 
 	public ServerClientThread(Socket accept) {
 		myServerSocket = accept;
         try {
         	inFromClient = new ObjectInputStream(myServerSocket.getInputStream());
-			outToClient = new ObjectOutputStream(myServerSocket.getOutputStream());
+			outToClient = new ObjectOutputStream(myServerSocket.getOutputStream());			
 		} catch (IOException e) {
             System.err.println(e.getMessage());
 		}
