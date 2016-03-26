@@ -136,17 +136,11 @@ public class Client extends JPanel implements ActionListener, Runnable {
     }
 
     private void updateMap() {
-        ImageIcon pinIcon;
-        if (isToUni) {
-            pinIcon = new ImageIcon("graphics/orangepin.png");
-        } else {
-            pinIcon = new ImageIcon("graphics/purplepin.png");
-        }
         for (Ride thisRide : currentRides) {
             MapPoint rideLocation = thisRide.getLocation();
-            JLabel pinLabel = new JLabel(pinIcon);
-            mapView.add(pinLabel);
-            pinLabel.setLocation(rideLocation.getX() - 5, rideLocation.getY() - 16);
+            Pin pin = new Pin(thisRide);
+            mapView.add(pin);
+            pin.setLocation(rideLocation.getX() - 5, rideLocation.getY() - 16);
             // TODO change 5 and 16 to constants. they are the relative location of the point of the pin to its top left corner
         }
     }
