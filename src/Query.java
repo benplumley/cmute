@@ -20,8 +20,6 @@ public class Query implements java.io.Serializable {
     public String toSQLString() {
         long startTime = dateAndTime.subtractMinutes(timeTolerance).getDateTime();
         long endTime = dateAndTime.addMinutes(timeTolerance).getDateTime();
-
-        // TODO decide between sqlite and mysql.
         String queryString = "SELECT * FROM rides WHERE" +
             " isToUni = " + isToUni +
             " AND dateAndTime >= " + startTime +
