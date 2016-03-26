@@ -114,13 +114,18 @@ public class Client extends JPanel implements ActionListener, Runnable {
 	}
 
     public void actionPerformed(ActionEvent e) {
-        switch (e.getActionCommand()) {
+        actionPerformed = e.getActionCommand()
+        switch (actionPerformed) {
             case "TO UNI":
                 isToUni = true;
                 break;
             case "FROM UNI":
                 isToUni = false;
                 break;
+            case else:
+                int rideSelected = Integer.parseInt(actionPerformed);
+                // the user clicked a pin. The pin's text should be that ride's UUID, so rideSelected is now set to the selected ride's UUID
+                book(rideSelected);
         }
         updateRides();
     }
@@ -143,6 +148,26 @@ public class Client extends JPanel implements ActionListener, Runnable {
             mapView.add(pinLabel);
             pinLabel.setLocation(rideLocation.getX() - 5, rideLocation.getY() - 16);
             // TODO change 5 and 16 to constants. they are the relative location of the point of the pin to its top left corner
+        }
+    }
+
+    private void book(int rideUUID) {
+        Object[] options = {"Cancel", "Book this ride!"};
+        int confirmed = JOptionPane.showOptionDialog(frame,
+            "Ride details here",
+            "Confirm Booking",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            options,
+            options[2]);
+        if (confirmed == JOptionPane.YES_OPTION) {
+            Boolean successful = connection.book(rideUUID);
+        }
+        if (successful) {
+            JOptionPane.showMessageDialog(frame, "Your booking was successful.");
+        } else {
+            JOptionPane.showMessageDialog(frame, "Your booking failed.");
         }
     }
 

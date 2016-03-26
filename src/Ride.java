@@ -5,6 +5,7 @@
 
 public class Ride implements java.io.Serializable {
 
+    private int UUID; // this is set by the database not the client
     private Boolean isToUni;
     private DateTime dateAndTime;
     private MapPoint startLocation;
