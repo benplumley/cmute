@@ -114,7 +114,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
 	}
 
     public void actionPerformed(ActionEvent e) {
-        actionPerformed = e.getActionCommand()
+        String actionPerformed = e.getActionCommand();
         switch (actionPerformed) {
             case "TO UNI":
                 isToUni = true;
@@ -122,8 +122,8 @@ public class Client extends JPanel implements ActionListener, Runnable {
             case "FROM UNI":
                 isToUni = false;
                 break;
-            case else:
-                Ride rideSelected = e.getSource().getRide();
+            default:
+                Ride rideSelected = ((Pin) e.getSource()).getRide();
                 // the user clicked a pin. The pin's text should be that ride's UUID, so rideSelected is now set to the selected ride's UUID
                 book(rideSelected);
         }
@@ -147,7 +147,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
 
     private void book(Ride ride) {
         Object[] options = {"Cancel", "Book this ride!"};
-        int confirmed = JOptionPane.showOptionDialog(frame,
+        int confirmed = JOptionPane.showOptionDialog(this,
             "Ride details here",
             "Confirm Booking",
             JOptionPane.YES_NO_OPTION,
@@ -155,13 +155,14 @@ public class Client extends JPanel implements ActionListener, Runnable {
             null,
             options,
             options[2]);
+        Boolean successful = false;
         if (confirmed == JOptionPane.YES_OPTION) {
-            Boolean successful = connection.book(ride);
+            successful = connection.book(ride);
         }
         if (successful) {
-            JOptionPane.showMessageDialog(frame, "Your booking was successful.");
+            JOptionPane.showMessageDialog(this, "Your booking was successful.");
         } else {
-            JOptionPane.showMessageDialog(frame, "Your booking failed.");
+            JOptionPane.showMessageDialog(this, "Your booking failed.");
         }
     }
 

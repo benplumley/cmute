@@ -1,4 +1,6 @@
-public class Pin extends JLabel {
+import javax.swing.ImageIcon;
+
+public class Pin extends javax.swing.JLabel {
 
     private Ride ride;
 
