@@ -11,6 +11,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ServerClientThread implements Runnable {
+	private static Server theServer;
 	private Socket myServerSocket;
 
 	private ObjectInputStream inFromClient;
@@ -30,7 +31,7 @@ public class ServerClientThread implements Runnable {
 		}
 	}
 
-	public void start() {
+	public void start(Server theServer) {
 		//Initialise protocol here?
 
 	}
@@ -61,7 +62,9 @@ public class ServerClientThread implements Runnable {
 	public void processRequest(Query query){
         String queryString = query.toSQLString();
         Ride[] result;
-		// TODO JDBC stuff - run queryString and parse results into Ride array
+        
+        theServer.processSQLStatement(query.toSQLString());
+        
 		sendRequestResults(result);
 	}
 
