@@ -146,7 +146,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
     private void book(Ride ride) {
         Object[] options = {"Cancel", "Book this ride!"};
         int confirmed = JOptionPane.showOptionDialog(this,
-            "Ride details here",
+            ride.getReadableDescription(),
             "Confirm Booking",
             JOptionPane.YES_NO_OPTION,
             JOptionPane.QUESTION_MESSAGE,

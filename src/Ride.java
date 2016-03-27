@@ -29,5 +29,15 @@ public class Ride implements java.io.Serializable {
         return isToUni;
     }
 
+    public String getReadableDescription() {
+        String description;
+        if (isToUni) {
+            description = "This journey starts at the pin and ends at the University of Bath.";
+        } else {
+            description = "This journey starts at the University of Bath and ends at the pin.";
+        }
+        description = description + " It will leave at " + dateAndTime.timeString() + " on " + dateAndTime.dateString() ". There are " + seatsRemaining + " seats available.";
+        return description;
+    }
 
 }
