@@ -6,15 +6,11 @@ public class Query implements java.io.Serializable {
     private Boolean isToUni;
     private DateTime dateAndTime;
     private int timeTolerance;
-    private MapPoint startLocation;
-    private int locationTolerance;
 
-    public Query(Boolean isToUni, DateTime dateAndTime, int timeTolerance, MapPoint startLocation, int locationTolerance) {
+    public Query(Boolean isToUni, DateTime dateAndTime, int timeTolerance) {
         this.isToUni = isToUni;
         this.dateAndTime = dateAndTime;
         this.timeTolerance = timeTolerance;
-        this.startLocation = startLocation;
-        this.locationTolerance = locationTolerance;
     }
 
     public String toSQLString() {

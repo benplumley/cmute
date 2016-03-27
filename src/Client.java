@@ -14,8 +14,6 @@ public class Client extends JPanel implements ActionListener, Runnable {
     private Boolean isToUni;
     private DateTime dateAndTime;
     private int timeTolerance;
-    private MapPoint startLocation;
-    private int locationTolerance;
     private Ride[] currentRides;
     private JPanel mapView;
 
@@ -131,7 +129,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
     }
 
     private void updateRides() {
-        currentRides = connection.getMatchingRides(isToUni, dateAndTime, timeTolerance, startLocation, locationTolerance);
+        currentRides = connection.getMatchingRides(isToUni, dateAndTime, timeTolerance);
         updateMap();
     }
 

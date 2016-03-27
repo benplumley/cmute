@@ -28,8 +28,8 @@ public class ClientConnection {
         }
     }
 
-    public Ride[] getMatchingRides(Boolean isToUni, DateTime dateAndTime, int timeTolerance, MapPoint startLocation, int locationTolerance) {
-        Object rideQuery = new Query(isToUni, dateAndTime, timeTolerance, startLocation, locationTolerance);
+    public Ride[] getMatchingRides(Boolean isToUni, DateTime dateAndTime, int timeTolerance) {
+        Object rideQuery = new Query(isToUni, dateAndTime, timeTolerance);
         Ride[] response = null;
         try {
             out.writeObject(rideQuery);
