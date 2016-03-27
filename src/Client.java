@@ -60,7 +60,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
 
 	private void populateFrame(Container frame) {
 		frame.setLayout(new GridBagLayout());
-		mapView = new JPanel(null);
+		mapView = new JPanel();
 		mapView.add(map);
 		GridBagConstraints layoutConstraints = new GridBagConstraints();
 		layoutConstraints.gridx = 0;
