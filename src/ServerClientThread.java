@@ -17,14 +17,14 @@ public class ServerClientThread implements Runnable {
 	private Query inputQuery;
 
 	private ObjectOutputStream outToClient;
-	private Ride outputRides;
+	private Ride[] outputRides;
 
 
 	public ServerClientThread(Socket accept) {
 		myServerSocket = accept;
         try {
         	inFromClient = new ObjectInputStream(myServerSocket.getInputStream());
-			outToClient = new ObjectOutputStream(myServerSocket.getOutputStream());			
+			outToClient = new ObjectOutputStream(myServerSocket.getOutputStream());
 		} catch (IOException e) {
             System.err.println(e.getMessage());
 		}
@@ -37,7 +37,7 @@ public class ServerClientThread implements Runnable {
 
 	public void run() {
 		try {
-			while((inputQuery = (Query) inFromClient.readObject()) != null){ //TODO is this valid???
+			while((inputQuery = (Query) inFromClient.readObject()) != null){ //TODO is this valid??? This might make the server close immediately after starting because that will be null when there's no client currently sending a request
 				processRequest(inputQuery);
 			}
 		} catch (ClassNotFoundException | IOException e) {
@@ -63,7 +63,7 @@ public class ServerClientThread implements Runnable {
 //		sendRequestResults(stuff);
 	}
 
-	public void sendRequestResults(Ride requestResult){
+	public void sendRequestResults(Ride[] requestResult){
 		try {
 			outToClient.writeObject(requestResult);
 			outToClient.flush();
