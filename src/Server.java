@@ -17,12 +17,11 @@ public class Server {
     public static Server theServer;
 
     private static int portNumber;
-    private static String userName;
-    private static String password;
 	private static String serverName;
 	private static String dbms;
 	
     private static ServerSocket serverSocket;
+    private static Connection connection;
 
     public static void main(String[] args) {
     	theServer = new Server(args);
@@ -32,15 +31,14 @@ public class Server {
 		try{
 			
         	portNumber = Integer.parseInt(args[0]);
-        	//For JDBC/sql stuff
-        	userName = args[1];
-        	password = args[2];
         	serverSocket = new ServerSocket(portNumber);
+        	
+        	getConnection(args[1], args[2]);
         	
             while (true)
             {
                 ServerClientThread clientThread = new ServerClientThread(serverSocket.accept());
-                clientThread.start(theServer);
+                clientThread.start();
             }
 
         } catch (Exception e) {
@@ -60,25 +58,34 @@ public class Server {
 		}
     }
     
-    public static Connection getConnection() throws SQLException {
+    public static void getConnection(String userName, String password){
 
-        Connection connection = null;
+        connection = null;
         Properties connectionProperties = new Properties();
         
         connectionProperties.put("user", userName);
         connectionProperties.put("password", password);
 
-        connection = DriverManager.getConnection(
-                       "jdbc:" + dbms + "://" +
-                       serverName +
-                       ":" + portNumber + "/",
-                       connectionProperties);
-
-        System.out.println("Connected to database");
-        return connection;
+        try {
+			connection = DriverManager.getConnection(
+			               "jdbc:" + dbms + "://" +
+			               serverName +
+			               ":" + portNumber + "/",
+			               connectionProperties);
+			
+			System.out.println("Connected to database");
+	        connection.setAutoCommit(false);
+	        
+		} catch (SQLException e) {
+			// TODO Connection not established
+			e.printStackTrace();
+		}
     }
 
-    /* All SQL statements are processed here by this one method so
+    /* 
+     * TODO May be necessary to seperate addding rides and getting rides. Review this decision
+     * 
+     * All SQL statements are processed here by this one method so
      * as to avoid concurrency issues. This is, admittedly, a naïve
      * implementation and admittedly would not be scalable. However
      * for now it should be functional.
@@ -86,10 +93,15 @@ public class Server {
      * @param   The input SQL request.
      * @return  The relevant SQL results from the DB.
      */
-	public static synchronized String processSQLStatement(String sqlString) {
-		//TODO review this architechture!
-		return "ello";
+	public static synchronized String processSQLStatement(String sqlString) throws SQLException {
+		//TODO yeah this is gonna need a lot of work
+		try {
+			connection.nativeSQL(sqlString);
+	    } catch (SQLException e ) {
+	    	e.printStackTrace();
+	    }
+		
+		return "Hello";
 	}
-
-
+	
 }

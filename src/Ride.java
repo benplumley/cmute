@@ -5,7 +5,9 @@
 
 public class Ride implements java.io.Serializable {
 
-    private int UUID; // this is set by the database not the client
+	private static final long serialVersionUID = 1219954696866557441L;
+	//http://stackoverflow.com/questions/285793/what-is-a-serialversionuid-and-why-should-i-use-it
+	private int UUID; // this is set by the database not the client
     private Boolean isToUni;
     private DateTime dateAndTime;
     private MapPoint startLocation;

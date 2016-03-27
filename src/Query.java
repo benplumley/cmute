@@ -3,7 +3,9 @@
 
 public class Query implements java.io.Serializable {
 
-    private Boolean isToUni;
+	private static final long serialVersionUID = 8969042836485710757L;
+	//http://stackoverflow.com/questions/285793/what-is-a-serialversionuid-and-why-should-i-use-it
+	private Boolean isToUni;
     private DateTime dateAndTime;
     private int timeTolerance;
 
