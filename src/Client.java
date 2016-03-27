@@ -152,7 +152,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
             JOptionPane.QUESTION_MESSAGE,
             null,
             options,
-            options[2]);
+            options[1]);
         Boolean successful = false;
         if (confirmed == JOptionPane.YES_OPTION) {
             successful = connection.book(ride);
