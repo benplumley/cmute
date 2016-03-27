@@ -46,7 +46,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
 		window.pack();
 		window.setLocationByPlatform(true);
 		window.setVisible(true);
-		Dimension windowSize = new Dimension(800, 500);
+		Dimension windowSize = new Dimension(800, 547);
 		window.setSize(windowSize);
 		window.setResizable(true);
 	}
