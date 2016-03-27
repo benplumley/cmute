@@ -134,6 +134,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
     }
 
     private void updateMap() {
+        // TODO the map needs to be cleared of all old pins when the query is updated, otherwise the new ones will just stack on top of the old ones
         for (Ride thisRide : currentRides) {
             MapPoint rideLocation = thisRide.getLocation();
             Pin pin = new Pin(thisRide);
