@@ -17,10 +17,10 @@ public class Query implements java.io.Serializable {
         long startTime = dateAndTime.subtractMinutes(timeTolerance).getDateTime();
         long endTime = dateAndTime.addMinutes(timeTolerance).getDateTime();
         String queryString = "SELECT * FROM rides WHERE" +
-            " isToUni = " + isToUni +
-            " AND dateAndTime >= " + startTime +
-            " AND dateAndTime <= " + endTime;
-            // TODO location and tolerance in WHERE clause
+            " is_to_uni = " + isToUni +
+            " AND date_and_time >= " + startTime +
+            " AND date_and_time <= " + endTime +
+            " AND seats_remaining > 0";
         return queryString;
     }
 
