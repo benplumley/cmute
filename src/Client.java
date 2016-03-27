@@ -122,7 +122,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
                 break;
             default:
                 Ride rideSelected = ((Pin) e.getSource()).getRide();
-                // the user clicked a pin. The pin's text should be that ride's UUID, so rideSelected is now set to the selected ride's UUID
+                // get the ride associated with the pin the user clicked
                 book(rideSelected);
         }
         updateRides();

@@ -1,6 +1,10 @@
 # Integrated Project
 
+CHANGES
+
+Location no longer used as part of the query because it clutters the UI, makes search slower and doesn't refine the results in a useful way.  
+Decided to use MySQL so the server can be run on LCPU.  
+
 TODO
 
-Each ride needs a UUID assigned by MySQL, this will be how the UI refers to that pin internally.  
-Do we need a location and location tolerance? The user sees a map of rides when they enter a time, might be more user friendly to let them decide per ride whether it's too far to walk rather than having to set a tolerance. Just show all rides within that time tolerance. Doesn't even clutter the map more because the area the user focusses on is the area near them, which will have the same number of rides in either way.
+Work out how repetition will work. If we just store a list of repeating days in the database, how do we store number of seats left because it will be different for each repetition (ie this Monday's ride has 3 seats left, but the same ride next monday has 5). Can't use multiple rows because each ride repeats an infinite number of times. Could use a worker in the server to check eg every hour and create a row for every repetition in the next month?
