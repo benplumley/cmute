@@ -60,7 +60,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
 
 	private void populateFrame(Container frame) {
 		frame.setLayout(new GridBagLayout());
-		mapView = new JPanel(null);
+		mapView = new JPanel();
 		mapView.add(map);
 		GridBagConstraints layoutConstraints = new GridBagConstraints();
 		layoutConstraints.gridx = 0;
@@ -99,16 +99,16 @@ public class Client extends JPanel implements ActionListener, Runnable {
 		layoutConstraints.gridwidth = 4;
 		frame.add(mapView, layoutConstraints);
 
-		// layoutConstraints.gridx = 0;
-		// layoutConstraints.gridy = 2;
-		// layoutConstraints.gridheight = 1;
-		// layoutConstraints.gridwidth = 1;
-		//
-		// JSpinner timeSpinner = new JSpinner( new SpinnerDateModel() );
-		// JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
-		// timeSpinner.setEditor(timeEditor);
-		// timeSpinner.setValue(new Date()); // will only show the current time
-		// frame.add(timeSpinner, layoutConstraints);
+		layoutConstraints.gridx = 0;
+		layoutConstraints.gridy = 2;
+		layoutConstraints.gridheight = 1;
+		layoutConstraints.gridwidth = 1;
+
+		JSpinner timeSpinner = new JSpinner( new SpinnerDateModel() );
+		JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
+		timeSpinner.setEditor(timeEditor);
+		timeSpinner.setValue(new Date()); // will only show the current time
+		frame.add(timeSpinner, layoutConstraints);
 	}
 
     public void actionPerformed(ActionEvent e) {
