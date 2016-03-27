@@ -59,8 +59,10 @@ public class ServerClientThread implements Runnable {
 	}
 
 	public void processRequest(Query query){
-		//JDBC stuff
-//		sendRequestResults(stuff);
+        String queryString = query.toSQLString();
+        Ride[] result;
+		// TODO JDBC stuff - run queryString and parse results into Ride array
+		sendRequestResults(result);
 	}
 
 	public void sendRequestResults(Ride[] requestResult){
