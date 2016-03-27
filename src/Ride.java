@@ -36,7 +36,7 @@ public class Ride implements java.io.Serializable {
         } else {
             description = "This journey starts at the University of Bath and ends at the pin.";
         }
-        description = description + " It will leave at " + dateAndTime.timeString() + " on " + dateAndTime.dateString() ". There are " + seatsRemaining + " seats available.";
+        description = description + " It will leave at " + dateAndTime.timeString() + " on " + dateAndTime.dateString() + ". There are " + seatsRemaining + " seats available.";
         return description;
     }
 
