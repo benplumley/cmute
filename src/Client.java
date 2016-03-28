@@ -10,7 +10,8 @@ public class Client extends JPanel implements ActionListener, Runnable {
 	private static String hostname = "localhost";
 	private static int portNumber = 55511;
 	private Map map = new Map();
-    private ClientConnection connection;
+    // private ClientConnection connection;
+    private FakeServer connection; // TODO for debugging
     private Boolean isToUni;
     private DateTime dateAndTime;
     private int timeTolerance;
@@ -34,7 +35,8 @@ public class Client extends JPanel implements ActionListener, Runnable {
 		// 	IllegalAccessException | UnsupportedLookAndFeelException ex) {}
 		setupPanels();
 		setupFrame();
-		connection = new ClientConnection(hostname, portNumber);
+		// connection = new ClientConnection(hostname, portNumber);
+		connection = new FakeServer(); // TODO for debugging
 	}
 
 	private void setupFrame() {
@@ -141,6 +143,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
         for (int i = 0; i < currentRides.length; i++) {
             Ride thisRide = currentRides[i];
             MapPoint rideLocation = thisRide.getLocation();
+            System.out.println(rideLocation.getX()); // TODO debug
             Pin pin = new Pin(thisRide);
             mapView.add(pin, new Integer(i));
             pin.setBounds(rideLocation.getX() - 5, rideLocation.getY() - 16, 11, 18);
