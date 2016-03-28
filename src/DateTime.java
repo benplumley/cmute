@@ -3,7 +3,7 @@ import java.text.DateFormat;
 
 public class DateTime implements java.io.Serializable {
 
-    long epoch = 0; // in milliseconds TODO this might be supposed to be seconds, epoch time is normally seconds
+    long epoch = 0; // in milliseconds
     private static final int MINUTES_TO_MS = 60000;
 
     public DateTime(long epoch) {
