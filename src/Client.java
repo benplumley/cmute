@@ -43,7 +43,7 @@ public class Client extends JPanel implements ActionListener, MouseListener, Run
 		window.pack();
 		window.setLocationByPlatform(true);
 		window.setVisible(true);
-		Dimension windowSize = new Dimension(816, 547);
+		Dimension windowSize = new Dimension(816, 537);
 		window.setSize(windowSize);
 		window.setResizable(true);
 	}
@@ -63,6 +63,7 @@ public class Client extends JPanel implements ActionListener, MouseListener, Run
         map.setPreferredSize(new Dimension(800,450));
 		mapView.add(map, new Integer(0));
 		GridBagConstraints layoutConstraints = new GridBagConstraints();
+
 		layoutConstraints.gridx = 0;
 		layoutConstraints.gridy = 0;
 		layoutConstraints.gridheight = 1;
@@ -99,17 +100,26 @@ public class Client extends JPanel implements ActionListener, MouseListener, Run
 		layoutConstraints.gridwidth = 4;
 		frame.add(mapView, layoutConstraints);
 
-		layoutConstraints.gridx = 0;
-		layoutConstraints.gridy = 2;
-		layoutConstraints.gridheight = 1;
-		layoutConstraints.gridwidth = 1;
-
         try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			// sets the LnF after creating the to/from buttons, which have their own LnF
 		} catch (ClassNotFoundException | InstantiationException |
 			IllegalAccessException | UnsupportedLookAndFeelException ex) {}
 
+        layoutConstraints.gridx = 0;
+        layoutConstraints.gridy = 2;
+        layoutConstraints.gridheight = 1;
+        layoutConstraints.gridwidth = 1;
+		JSpinner dateSpinner = new JSpinner( new SpinnerDateModel() );
+		JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(dateSpinner, "dd/MM/yyyy");
+		dateSpinner.setEditor(dateEditor);
+		dateSpinner.setValue(new Date()); // will only show the current date
+		frame.add(dateSpinner, layoutConstraints);
+
+        layoutConstraints.gridx = 2;
+        layoutConstraints.gridy = 2;
+        layoutConstraints.gridheight = 1;
+        layoutConstraints.gridwidth = 1;
 		JSpinner timeSpinner = new JSpinner( new SpinnerDateModel() );
 		JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
 		timeSpinner.setEditor(timeEditor);
