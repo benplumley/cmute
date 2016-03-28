@@ -28,11 +28,6 @@ public class Client extends JPanel implements ActionListener, MouseListener, Run
 	}
 
 	public void run() {
-		// try {
-		// 	UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		// 	// matches the operating system's look and feel
-		// } catch (ClassNotFoundException | InstantiationException |
-		// 	IllegalAccessException | UnsupportedLookAndFeelException ex) {}
 		setupPanels();
 		setupFrame();
 		// connection = new ClientConnection(hostname, portNumber);
@@ -108,6 +103,12 @@ public class Client extends JPanel implements ActionListener, MouseListener, Run
 		layoutConstraints.gridy = 2;
 		layoutConstraints.gridheight = 1;
 		layoutConstraints.gridwidth = 1;
+
+        try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			// sets the LnF after creating the to/from buttons, which have their own LnF
+		} catch (ClassNotFoundException | InstantiationException |
+			IllegalAccessException | UnsupportedLookAndFeelException ex) {}
 
 		JSpinner timeSpinner = new JSpinner( new SpinnerDateModel() );
 		JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
