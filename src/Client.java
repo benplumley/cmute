@@ -143,8 +143,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
             mapView.remove(mapView.getIndexOf(oldPin));
         }
         mapView.repaint();
-        for (int i = 0; i < currentRides.length; i++) {
-            Ride thisRide = currentRides[i];
+        for (Ride thisRide : currentRides) {
             MapPoint rideLocation = thisRide.getLocation();
             Pin pin = new Pin(thisRide);
             mapView.add(pin, new Integer(1));
