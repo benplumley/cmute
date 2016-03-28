@@ -5,7 +5,7 @@ import java.io.*;
 import java.net.*;
 import java.util.Date;
 
-public class Client extends JPanel implements ActionListener, Runnable {
+public class Client extends JPanel implements ActionListener, MouseListener, Runnable {
 
 	private static String hostname = "localhost";
 	private static int portNumber = 55511;
@@ -125,13 +125,23 @@ public class Client extends JPanel implements ActionListener, Runnable {
             case "FROM UNI":
                 isToUni = false;
                 break;
-            default:
-                Ride rideSelected = ((Pin) e.getSource()).getRide();
-                // get the ride associated with the pin the user clicked
-                book(rideSelected);
         }
         updateRides();
     }
+
+    public void mouseClicked(MouseEvent e) {
+        Ride rideSelected = ((Pin) e.getSource()).getRide();
+        // get the ride associated with the pin the user clicked
+        book(rideSelected);
+    }
+
+    public void mousePressed(MouseEvent e) {}
+
+    public void mouseReleased(MouseEvent e) {}
+
+    public void mouseEntered(MouseEvent e) {}
+
+    public void mouseExited(MouseEvent e) {}
 
     private void updateRides() {
         currentRides = connection.getMatchingRides(isToUni, dateAndTime, timeTolerance);
@@ -146,6 +156,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
         for (Ride thisRide : currentRides) {
             MapPoint rideLocation = thisRide.getLocation();
             Pin pin = new Pin(thisRide);
+            pin.addMouseListener(this);
             mapView.add(pin, new Integer(1));
             pin.setBounds(rideLocation.getX() - 5, rideLocation.getY() - 16, 11, 18);
             // TODO change 5 and 16 to constants. they are the relative location of the point of the pin to its top left corner. 11 and 18 are the dimensions of a pin
@@ -153,7 +164,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
     }
 
     private void book(Ride ride) {
-        Object[] options = {"Cancel", "Book this ride!"};
+        Object[] options = {"Book this ride!", "Cancel"};
         int confirmed = JOptionPane.showOptionDialog(this,
             ride.getReadableDescription(),
             "Confirm Booking",
@@ -161,15 +172,15 @@ public class Client extends JPanel implements ActionListener, Runnable {
             JOptionPane.QUESTION_MESSAGE,
             null,
             options,
-            options[1]);
+            options[0]);
         Boolean successful = false;
         if (confirmed == JOptionPane.YES_OPTION) {
             successful = connection.book(ride);
-        }
-        if (successful) {
-            JOptionPane.showMessageDialog(this, "Your booking was successful.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Your booking failed.");
+            if (successful) {
+                JOptionPane.showMessageDialog(this, "Your booking was successful.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Your booking failed.");
+            }
         }
     }
 
