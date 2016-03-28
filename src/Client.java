@@ -15,7 +15,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
     private DateTime dateAndTime;
     private int timeTolerance;
     private Ride[] currentRides;
-    private JPanel mapView;
+    private JLayeredPane mapView;
 
 	public static void main(String[] args) {
 		Client client = new Client();
@@ -46,7 +46,7 @@ public class Client extends JPanel implements ActionListener, Runnable {
 		window.pack();
 		window.setLocationByPlatform(true);
 		window.setVisible(true);
-		Dimension windowSize = new Dimension(800, 547);
+		Dimension windowSize = new Dimension(816, 547);
 		window.setSize(windowSize);
 		window.setResizable(true);
 	}
@@ -60,8 +60,11 @@ public class Client extends JPanel implements ActionListener, Runnable {
 
 	private void populateFrame(Container frame) {
 		frame.setLayout(new GridBagLayout());
-		mapView = new JPanel();
-		mapView.add(map);
+		mapView = new JLayeredPane();
+        mapView.setPreferredSize(new Dimension(800,450));
+        map.setBounds(0,0,800,450);
+        map.setPreferredSize(new Dimension(800,450));
+		mapView.add(map, new Integer(0));
 		GridBagConstraints layoutConstraints = new GridBagConstraints();
 		layoutConstraints.gridx = 0;
 		layoutConstraints.gridy = 0;
@@ -135,12 +138,13 @@ public class Client extends JPanel implements ActionListener, Runnable {
 
     private void updateMap() {
         // TODO the map needs to be cleared of all old pins when the query is updated, otherwise the new ones will just stack on top of the old ones
-        for (Ride thisRide : currentRides) {
+        for (int i = 0; i < currentRides.length; i++) {
+            Ride thisRide = currentRides[i];
             MapPoint rideLocation = thisRide.getLocation();
             Pin pin = new Pin(thisRide);
-            mapView.add(pin);
-            pin.setLocation(rideLocation.getX() - 5, rideLocation.getY() - 16);
-            // TODO change 5 and 16 to constants. they are the relative location of the point of the pin to its top left corner
+            mapView.add(pin, new Integer(i));
+            pin.setBounds(rideLocation.getX() - 5, rideLocation.getY() - 16, 11, 18);
+            // TODO change 5 and 16 to constants. they are the relative location of the point of the pin to its top left corner. 11 and 18 are the dimensions of a pin
         }
     }
 
