@@ -139,13 +139,15 @@ public class Client extends JPanel implements ActionListener, Runnable {
     }
 
     private void updateMap() {
-        // TODO the map needs to be cleared of all old pins when the query is updated, otherwise the new ones will just stack on top of the old ones
+        for (Component oldPin : mapView.getComponentsInLayer(1)) {
+            mapView.remove(mapView.getIndexOf(oldPin));
+        }
+        mapView.repaint();
         for (int i = 0; i < currentRides.length; i++) {
             Ride thisRide = currentRides[i];
             MapPoint rideLocation = thisRide.getLocation();
-            System.out.println(rideLocation.getX()); // TODO debug
             Pin pin = new Pin(thisRide);
-            mapView.add(pin, new Integer(i));
+            mapView.add(pin, new Integer(1));
             pin.setBounds(rideLocation.getX() - 5, rideLocation.getY() - 16, 11, 18);
             // TODO change 5 and 16 to constants. they are the relative location of the point of the pin to its top left corner. 11 and 18 are the dimensions of a pin
         }
