@@ -63,3 +63,6 @@ Idea:
 			
 		BookRide
 			-Is just the ride ID of the ride being booked
+			
+		Quit
+			-Signals user wants to quit thus close the thread
