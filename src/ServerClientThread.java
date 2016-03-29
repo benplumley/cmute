@@ -61,8 +61,16 @@ public class ServerClientThread implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
-	public void processRequest(Query query){
+	
+	private void processInput(Object inObject){
+		
+	}
+	
+	private void processOutput(Object outObject){
+		
+	}
+	
+	private void processRequest(Query query){
 //        String queryString = query.toSQLString();
         try {
 			Server.processSQLStatement(query.toSQLString());
@@ -73,7 +81,7 @@ public class ServerClientThread implements Runnable {
 
 	}
 
-	public void sendRequestResults(Ride[] requestResult){
+	private void sendRequestResults(Ride[] requestResult){
 		try {
 			out.writeObject(requestResult);
 			out.flush();
