@@ -1,14 +1,16 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import javax.swing.event.*;
 import java.io.*;
 import java.net.*;
 import java.util.Date;
 
-public class Client extends JPanel implements ActionListener, MouseListener, Runnable {
+public class Client extends JPanel implements ActionListener, MouseListener, ChangeListener, Runnable {
 
 	private static String hostname = "localhost";
 	private static int portNumber = 55511;
+    private static final int MS_IN_DAY = (24 * 60 * 60 * 1000);
 	private Map map = new Map();
     // private ClientConnection connection;
     private FakeServer connection; // TODO for debugging
@@ -17,6 +19,8 @@ public class Client extends JPanel implements ActionListener, MouseListener, Run
     private int timeTolerance;
     private Ride[] currentRides;
     private JLayeredPane mapView;
+    private JSpinner dateSpinner;
+    private JSpinner timeSpinner;
 
 	public static void main(String[] args) {
 		Client client = new Client();
@@ -110,20 +114,24 @@ public class Client extends JPanel implements ActionListener, MouseListener, Run
         layoutConstraints.gridy = 2;
         layoutConstraints.gridheight = 1;
         layoutConstraints.gridwidth = 1;
-		JSpinner dateSpinner = new JSpinner( new SpinnerDateModel() );
+		dateSpinner = new JSpinner( new SpinnerDateModel() );
 		JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(dateSpinner, "dd/MM/yyyy");
 		dateSpinner.setEditor(dateEditor);
 		dateSpinner.setValue(new Date()); // will only show the current date
+        dateSpinner.setValue(dateSpinner.getNextValue());
+        dateSpinner.setValue(dateSpinner.getPreviousValue());
+        dateSpinner.addChangeListener(this);
 		frame.add(dateSpinner, layoutConstraints);
 
         layoutConstraints.gridx = 2;
         layoutConstraints.gridy = 2;
         layoutConstraints.gridheight = 1;
         layoutConstraints.gridwidth = 1;
-		JSpinner timeSpinner = new JSpinner( new SpinnerDateModel() );
+		timeSpinner = new JSpinner( new SpinnerDateModel() );
 		JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
 		timeSpinner.setEditor(timeEditor);
 		timeSpinner.setValue(new Date()); // will only show the current time
+        timeSpinner.addChangeListener(this);
 		frame.add(timeSpinner, layoutConstraints);
 	}
 
@@ -147,12 +155,15 @@ public class Client extends JPanel implements ActionListener, MouseListener, Run
     }
 
     public void mousePressed(MouseEvent e) {}
-
     public void mouseReleased(MouseEvent e) {}
-
     public void mouseEntered(MouseEvent e) {}
-
     public void mouseExited(MouseEvent e) {}
+
+    public void stateChanged(ChangeEvent e) {
+        SpinnerModel dateModel = dateSpinner.getModel();
+        SpinnerModel timeModel = timeSpinner.getModel();
+        updateDateTime(((SpinnerDateModel)dateModel).getDate(), ((SpinnerDateModel)timeModel).getDate());
+    }
 
     private void updateRides() {
         currentRides = connection.getMatchingRides(isToUni, dateAndTime, timeTolerance);
@@ -193,6 +204,20 @@ public class Client extends JPanel implements ActionListener, MouseListener, Run
                 JOptionPane.showMessageDialog(this, "Your booking failed.");
             }
         }
+    }
+
+    private void updateDateTime(Date date, Date time) {
+        long epochDate = date.getTime();
+        System.out.println(epochDate);
+        // epochDate -= epochDate % MS_IN_DAY;
+        long epochTime = time.getTime() % MS_IN_DAY;
+        dateAndTime = new DateTime(epochDate + epochTime);
+        System.out.println(dateAndTime.dateString() + " " + dateAndTime.timeString());
+        System.out.println(date.toString());
+        // long sum = epochDate + epochTime;
+        System.out.println(epochDate + ", " + date.getTime());
+        System.out.println();
+        // TODO none of this crap works, the date field contains a time until one of the the buttons is clicked and the time field is always an hour out
     }
 
 }
