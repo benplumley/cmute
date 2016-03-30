@@ -3,7 +3,6 @@
  * encode basic messages, e.g. whether the client
  * is quitting or if a ride has been successfully
  * booked.
- * 
  */
 
 public class MessageObject extends ProtocolObject {
@@ -12,6 +11,7 @@ public class MessageObject extends ProtocolObject {
 	private final MessageContent myMessage;
 	
 	public MessageObject(MessageContent newMessage){
+		super(true); //Inidicate that the object is indeed a message
 		this.myMessage = newMessage;
 	}
 	

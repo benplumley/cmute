@@ -23,6 +23,7 @@ public class ServerClientThread implements Runnable {
 			out = new ObjectOutputStream(myServerSocket.getOutputStream());
 		} catch (IOException e) {
             System.err.println(e.getMessage());
+            this.close();
 		}
 	}
 
@@ -33,9 +34,9 @@ public class ServerClientThread implements Runnable {
 
 	public void run() {
 		try {
-			@SuppressWarnings("unused")
-			Object input = null;
-			while((input = (Query) in.readObject()) != null){
+			ProtocolObject input = null;
+			while((input = (ProtocolObject) in.readObject()) != null){
+				this.processInput(input); //Surround with try catcth?
 				/*
 				 * TODO is this valid???
 				 * This might make the server close immediately after starting
@@ -47,6 +48,7 @@ public class ServerClientThread implements Runnable {
 			}
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
+			//Send error message to client. Try to handle failure more gracefully.
 		} finally {
 			this.close();
 		}
@@ -62,25 +64,23 @@ public class ServerClientThread implements Runnable {
 		}
 	}
 	
-	private void processInput(Object inObject){
-		
-	}
-	
-	private void processOutput(Object outObject){
-		
-	}
-	
-	private void processRequest(Query query){
-//        String queryString = query.toSQLString();
-        try {
-			Server.processSQLStatement(query.toSQLString());
-		} catch (SQLException e) {
-			// TODO HOW TO DEAL WITH THIS??????????
-			e.printStackTrace();
+	private void processInput(ProtocolObject inObject){
+		if(inObject.isMessage()){
+			this.handleMessage((MessageObject) inObject);
+		} else {
+			//probably just send SQL stuff to be processed
 		}
-
+	}
+	
+	private void handleMessage(MessageObject inObject) {
+		// TODO Auto-generated method stub
+		
 	}
 
+	private void processOutput(ProtocolObject outObject){
+		
+	}
+	
 	private void sendRequestResults(Ride[] requestResult){
 		try {
 			out.writeObject(requestResult);
