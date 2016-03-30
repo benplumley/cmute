@@ -1,4 +1,5 @@
 
-public abstract class ServerToClient {
+@SuppressWarnings("serial")
+public abstract class ServerToClient extends ProtocolObject {
 
 }
