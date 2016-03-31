@@ -2,7 +2,7 @@
 @SuppressWarnings("serial")
 public abstract class ServerToClient extends ProtocolObject {
 
-	public ServerToClient(boolean message) {
+	public ServerToClient() {
 		super(false); //Indicate that the object is not a message
 		// TODO Auto-generated constructor stub
 	}

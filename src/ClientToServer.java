@@ -1,10 +1,14 @@
 @SuppressWarnings("serial")
-public abstract class ClientToServer extends ProtocolObject {
+public abstract class ClientToServer extends ProtocolObject implements SQLable {
 	
-	public ClientToServer(boolean message) {
+	private final int myClientID; //TODO client ID may not be an int. Change me!!!!!!
+	
+	public ClientToServer(int clientID) {
 		super(false); //Indicate that the object is not a message
-		// TODO Auto-generated constructor stub
+		this.myClientID = clientID;
 	}
-
-	public abstract String toSQLString();
+	
+	public int getClientID() {
+		return myClientID;
+	}
 }
