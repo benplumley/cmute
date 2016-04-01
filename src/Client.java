@@ -17,15 +17,15 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     private FakeServer connection; // TODO for debugging
     private Boolean isToUni = true;
     private DateTime dateAndTime;
-    private int timeTolerance;
+    private int timeTolerance = TOLERANCE_INIT;
     private Ride[] currentRides;
     private JLayeredPane mapView;
     private JSpinner dateSpinner;
-    // private JSpinner timeSpinner;
     private static final int TOLERANCE_MIN = 0;
     private static final int TOLERANCE_MAX = 60;
     private static final int TOLERANCE_INIT = 5;
     private JSlider toleranceSlider;
+    private JLabel toleranceLabel;
 
 	public static void main(String[] args) {
 		Client client = new Client();
@@ -52,7 +52,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 		window.pack();
 		window.setLocationByPlatform(true);
 		window.setVisible(true);
-		Dimension windowSize = new Dimension(816, 537);
+		Dimension windowSize = new Dimension(816, 543);
 		window.setSize(windowSize);
 		window.setResizable(true);
 	}
@@ -71,72 +71,60 @@ public class Client extends JPanel implements ActionListener, MouseListener,
         map.setBounds(0,0,800,450);
         map.setPreferredSize(new Dimension(800,450));
 		mapView.add(map, new Integer(0));
-		GridBagConstraints layoutConstraints = new GridBagConstraints();
-
-		layoutConstraints.gridx = 0;
-		layoutConstraints.gridy = 0;
-		layoutConstraints.gridheight = 1;
-		layoutConstraints.gridwidth = 2;
-		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
-		layoutConstraints.weightx = 0.5;
-		JButton from = new JButton("FROM UNI");
+        JPanel topButtons = new JPanel(new GridLayout(1, 2));
+        JButton from = new JButton("FROM UNI");
 		from.setBackground(new Color(198, 0, 167));
 		from.setForeground(Color.WHITE);
         from.setFocusPainted(false);
 		from.setRolloverEnabled(false);
 		from.setBorderPainted(false);
         from.addActionListener(this);
-		frame.add(from, layoutConstraints);
-
-		layoutConstraints.gridx = 2;
-		layoutConstraints.gridy = 0;
-		layoutConstraints.gridheight = 1;
-		layoutConstraints.gridwidth = 2;
-		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
-		layoutConstraints.weightx = 0.5;
-		JButton to = new JButton("TO UNI");
-		to.setBackground(new Color(255, 116, 0));
-		to.setForeground(Color.WHITE);
+        JButton to = new JButton("TO UNI");
+        to.setBackground(new Color(255, 116, 0));
+        to.setForeground(Color.WHITE);
         to.setFocusPainted(false);
-		to.setRolloverEnabled(false);
-		to.setBorderPainted(false);
+        to.setRolloverEnabled(false);
+        to.setBorderPainted(false);
         to.addActionListener(this);
-		frame.add(to, layoutConstraints);
-
-		layoutConstraints.gridx = 0;
-		layoutConstraints.gridy = 1;
-		layoutConstraints.gridheight = 1;
-		layoutConstraints.gridwidth = 4;
-		frame.add(mapView, layoutConstraints);
-
+        topButtons.add(from);
+        topButtons.add(to);
         try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			// sets the LnF after creating the to/from buttons, which have their own LnF
-		} catch (ClassNotFoundException | InstantiationException |
-			IllegalAccessException | UnsupportedLookAndFeelException ex) {}
-
-        layoutConstraints.gridx = 0;
-        layoutConstraints.gridy = 2;
-        layoutConstraints.gridheight = 1;
-        layoutConstraints.gridwidth = 2;
-        layoutConstraints.weightx = 0.5;
-		dateSpinner = new JSpinner( new SpinnerDateModel() );
-		JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(dateSpinner, "dd/MM/yyyy HH:mm");
-		dateSpinner.setEditor(dateEditor);
-		dateSpinner.setValue(new Date()); // will only show the current date
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            // sets the LnF after creating the to/from buttons, which have their own LnF
+        } catch (ClassNotFoundException | InstantiationException |
+        IllegalAccessException | UnsupportedLookAndFeelException ex) {}
+        dateSpinner = new JSpinner( new SpinnerDateModel() );
+        JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(dateSpinner, "dd/MM/yyyy HH:mm");
+        dateSpinner.setEditor(dateEditor);
+        dateSpinner.setValue(new Date()); // will only show the current date
         dateSpinner.setValue(dateSpinner.getNextValue());
         dateSpinner.setValue(dateSpinner.getPreviousValue());
         dateSpinner.addChangeListener(this);
-		frame.add(dateSpinner, layoutConstraints);
-
-        layoutConstraints.gridx = 2;
-        layoutConstraints.gridy = 2;
-        layoutConstraints.gridheight = 1;
-        layoutConstraints.gridwidth = 2;
-        layoutConstraints.weightx = 0.5;
         toleranceSlider = new JSlider(JSlider.HORIZONTAL, TOLERANCE_MIN, TOLERANCE_MAX, TOLERANCE_INIT);
         toleranceSlider.addChangeListener(this);
+        toleranceLabel = new JLabel("\u00B1" + timeTolerance + "m");
+
+		GridBagConstraints layoutConstraints = new GridBagConstraints();
+		layoutConstraints.gridx = 0;
+		layoutConstraints.gridy = 0;
+		layoutConstraints.gridheight = 1;
+		layoutConstraints.gridwidth = 4;
+		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
+		layoutConstraints.weightx = 0;
+        frame.add(topButtons, layoutConstraints);
+		layoutConstraints.gridy = 1;
+		frame.add(mapView, layoutConstraints);
+        layoutConstraints.gridy = 2;
+        layoutConstraints.gridwidth = 2;
+        layoutConstraints.weightx = 0.5;
+		frame.add(dateSpinner, layoutConstraints);
+        layoutConstraints.gridx = 2;
+        layoutConstraints.gridwidth = 1;
+        layoutConstraints.weightx = 0.25;
 		frame.add(toleranceSlider, layoutConstraints);
+        layoutConstraints.gridx = 3;
+        layoutConstraints.weightx = 0.25;
+        frame.add(toleranceLabel, layoutConstraints);
 	}
 
     public void actionPerformed(ActionEvent e) {
@@ -167,8 +155,10 @@ public class Client extends JPanel implements ActionListener, MouseListener,
         SpinnerModel dateModel = dateSpinner.getModel();
         if (!toleranceSlider.getValueIsAdjusting()) {
             timeTolerance = (int)toleranceSlider.getValue();
+            toleranceLabel.setText("\u00B1" + timeTolerance + "m");
         }
         updateDateTime(((SpinnerDateModel)dateModel).getDate());
+        updateRides();
     }
 
     private void updateRides() {
@@ -215,7 +205,6 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     private void updateDateTime(Date date) {
         long epochDate = date.getTime();
         dateAndTime = new DateTime(epochDate);
-        updateRides();
     }
 
 }
