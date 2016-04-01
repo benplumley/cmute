@@ -142,10 +142,10 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     public void mouseExited(MouseEvent e) {}
 
     public void stateChanged(ChangeEvent e) {
-        SpinnerModel dateModel = dateSpinner.getModel();
         timeTolerance = (int)toleranceSlider.getValue();
         toleranceLabel.setText("\u00B1" + timeTolerance + "m");
         if (!toleranceSlider.getValueIsAdjusting()) {
+            SpinnerModel dateModel = dateSpinner.getModel();
             updateDateTime(((SpinnerDateModel)dateModel).getDate());
             updateRides();
         }
