@@ -20,7 +20,7 @@ public class Client extends JPanel implements ActionListener, MouseListener, Cha
     private Ride[] currentRides;
     private JLayeredPane mapView;
     private JSpinner dateSpinner;
-    private JSpinner timeSpinner;
+    // private JSpinner timeSpinner;
 
 	public static void main(String[] args) {
 		Client client = new Client();
@@ -115,7 +115,7 @@ public class Client extends JPanel implements ActionListener, MouseListener, Cha
         layoutConstraints.gridheight = 1;
         layoutConstraints.gridwidth = 1;
 		dateSpinner = new JSpinner( new SpinnerDateModel() );
-		JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(dateSpinner, "dd/MM/yyyy");
+		JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(dateSpinner, "dd/MM/yyyy HH:mm:ss");
 		dateSpinner.setEditor(dateEditor);
 		dateSpinner.setValue(new Date()); // will only show the current date
         dateSpinner.setValue(dateSpinner.getNextValue());
@@ -123,16 +123,12 @@ public class Client extends JPanel implements ActionListener, MouseListener, Cha
         dateSpinner.addChangeListener(this);
 		frame.add(dateSpinner, layoutConstraints);
 
-        layoutConstraints.gridx = 2;
-        layoutConstraints.gridy = 2;
-        layoutConstraints.gridheight = 1;
-        layoutConstraints.gridwidth = 1;
-		timeSpinner = new JSpinner( new SpinnerDateModel() );
-		JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
-		timeSpinner.setEditor(timeEditor);
-		timeSpinner.setValue(new Date()); // will only show the current time
-        timeSpinner.addChangeListener(this);
-		frame.add(timeSpinner, layoutConstraints);
+        // layoutConstraints.gridx = 2;
+        // layoutConstraints.gridy = 2;
+        // layoutConstraints.gridheight = 1;
+        // layoutConstraints.gridwidth = 1;
+        
+		// frame.add(timeSpinner, layoutConstraints);
 	}
 
     public void actionPerformed(ActionEvent e) {
@@ -161,8 +157,7 @@ public class Client extends JPanel implements ActionListener, MouseListener, Cha
 
     public void stateChanged(ChangeEvent e) {
         SpinnerModel dateModel = dateSpinner.getModel();
-        SpinnerModel timeModel = timeSpinner.getModel();
-        updateDateTime(((SpinnerDateModel)dateModel).getDate(), ((SpinnerDateModel)timeModel).getDate());
+        updateDateTime(((SpinnerDateModel)dateModel).getDate());
     }
 
     private void updateRides() {
@@ -206,18 +201,10 @@ public class Client extends JPanel implements ActionListener, MouseListener, Cha
         }
     }
 
-    private void updateDateTime(Date date, Date time) {
+    private void updateDateTime(Date date) {
         long epochDate = date.getTime();
-        System.out.println(epochDate);
-        // epochDate -= epochDate % MS_IN_DAY;
-        long epochTime = time.getTime() % MS_IN_DAY;
-        dateAndTime = new DateTime(epochDate + epochTime);
+        dateAndTime = new DateTime(epochDate);
         System.out.println(dateAndTime.dateString() + " " + dateAndTime.timeString());
-        System.out.println(date.toString());
-        // long sum = epochDate + epochTime;
-        System.out.println(epochDate + ", " + date.getTime());
-        System.out.println();
-        // TODO none of this crap works, the date field contains a time until one of the the buttons is clicked and the time field is always an hour out
     }
 
 }
