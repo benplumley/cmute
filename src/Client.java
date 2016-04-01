@@ -6,7 +6,8 @@ import java.io.*;
 import java.net.*;
 import java.util.Date;
 
-public class Client extends JPanel implements ActionListener, MouseListener, ChangeListener, Runnable {
+public class Client extends JPanel implements ActionListener, MouseListener,
+    ChangeListener, Runnable {
 
 	private static String hostname = "localhost";
 	private static int portNumber = 55511;
@@ -14,13 +15,17 @@ public class Client extends JPanel implements ActionListener, MouseListener, Cha
 	private Map map = new Map();
     // private ClientConnection connection;
     private FakeServer connection; // TODO for debugging
-    private Boolean isToUni;
+    private Boolean isToUni = true;
     private DateTime dateAndTime;
     private int timeTolerance;
     private Ride[] currentRides;
     private JLayeredPane mapView;
     private JSpinner dateSpinner;
     // private JSpinner timeSpinner;
+    private static final int TOLERANCE_MIN = 0;
+    private static final int TOLERANCE_MAX = 60;
+    private static final int TOLERANCE_INIT = 5;
+    private JSlider toleranceSlider;
 
 	public static void main(String[] args) {
 		Client client = new Client();
@@ -113,9 +118,10 @@ public class Client extends JPanel implements ActionListener, MouseListener, Cha
         layoutConstraints.gridx = 0;
         layoutConstraints.gridy = 2;
         layoutConstraints.gridheight = 1;
-        layoutConstraints.gridwidth = 1;
+        layoutConstraints.gridwidth = 2;
+        layoutConstraints.weightx = 0.5;
 		dateSpinner = new JSpinner( new SpinnerDateModel() );
-		JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(dateSpinner, "dd/MM/yyyy HH:mm:ss");
+		JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(dateSpinner, "dd/MM/yyyy HH:mm");
 		dateSpinner.setEditor(dateEditor);
 		dateSpinner.setValue(new Date()); // will only show the current date
         dateSpinner.setValue(dateSpinner.getNextValue());
@@ -123,12 +129,14 @@ public class Client extends JPanel implements ActionListener, MouseListener, Cha
         dateSpinner.addChangeListener(this);
 		frame.add(dateSpinner, layoutConstraints);
 
-        // layoutConstraints.gridx = 2;
-        // layoutConstraints.gridy = 2;
-        // layoutConstraints.gridheight = 1;
-        // layoutConstraints.gridwidth = 1;
-        
-		// frame.add(timeSpinner, layoutConstraints);
+        layoutConstraints.gridx = 2;
+        layoutConstraints.gridy = 2;
+        layoutConstraints.gridheight = 1;
+        layoutConstraints.gridwidth = 2;
+        layoutConstraints.weightx = 0.5;
+        toleranceSlider = new JSlider(JSlider.HORIZONTAL, TOLERANCE_MIN, TOLERANCE_MAX, TOLERANCE_INIT);
+        toleranceSlider.addChangeListener(this);
+		frame.add(toleranceSlider, layoutConstraints);
 	}
 
     public void actionPerformed(ActionEvent e) {
@@ -157,6 +165,9 @@ public class Client extends JPanel implements ActionListener, MouseListener, Cha
 
     public void stateChanged(ChangeEvent e) {
         SpinnerModel dateModel = dateSpinner.getModel();
+        if (!toleranceSlider.getValueIsAdjusting()) {
+            timeTolerance = (int)toleranceSlider.getValue();
+        }
         updateDateTime(((SpinnerDateModel)dateModel).getDate());
     }
 
@@ -204,7 +215,7 @@ public class Client extends JPanel implements ActionListener, MouseListener, Cha
     private void updateDateTime(Date date) {
         long epochDate = date.getTime();
         dateAndTime = new DateTime(epochDate);
-        System.out.println(dateAndTime.dateString() + " " + dateAndTime.timeString());
+        updateRides();
     }
 
 }
