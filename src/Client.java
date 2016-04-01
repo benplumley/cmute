@@ -37,7 +37,6 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 	}
 
 	public void run() {
-		setupPanels();
 		setupFrame();
 		// connection = new ClientConnection(hostname, portNumber);
 		connection = new FakeServer(); // TODO for debugging
@@ -55,13 +54,6 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 		Dimension windowSize = new Dimension(816, 543);
 		window.setSize(windowSize);
 		window.setResizable(true);
-	}
-
-	private void setupPanels() {
-		// TODO time and date picker
-		// slider for time range
-		// slider for start radius
-		// slider for end radius
 	}
 
 	private void populateFrame(Container frame) {
@@ -92,13 +84,11 @@ public class Client extends JPanel implements ActionListener, MouseListener,
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             // sets the LnF after creating the to/from buttons, which have their own LnF
         } catch (ClassNotFoundException | InstantiationException |
-        IllegalAccessException | UnsupportedLookAndFeelException ex) {}
-        dateSpinner = new JSpinner( new SpinnerDateModel() );
+            IllegalAccessException | UnsupportedLookAndFeelException ex) {}
+        dateSpinner = new JSpinner(new SpinnerDateModel());
         JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(dateSpinner, "dd/MM/yyyy HH:mm");
         dateSpinner.setEditor(dateEditor);
-        dateSpinner.setValue(new Date()); // will only show the current date
-        dateSpinner.setValue(dateSpinner.getNextValue());
-        dateSpinner.setValue(dateSpinner.getPreviousValue());
+        dateSpinner.setValue(new Date()); // will show the current date and time
         dateSpinner.addChangeListener(this);
         toleranceSlider = new JSlider(JSlider.HORIZONTAL, TOLERANCE_MIN, TOLERANCE_MAX, TOLERANCE_INIT);
         toleranceSlider.addChangeListener(this);
@@ -153,12 +143,12 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 
     public void stateChanged(ChangeEvent e) {
         SpinnerModel dateModel = dateSpinner.getModel();
+        timeTolerance = (int)toleranceSlider.getValue();
+        toleranceLabel.setText("\u00B1" + timeTolerance + "m");
         if (!toleranceSlider.getValueIsAdjusting()) {
-            timeTolerance = (int)toleranceSlider.getValue();
-            toleranceLabel.setText("\u00B1" + timeTolerance + "m");
+            updateDateTime(((SpinnerDateModel)dateModel).getDate());
+            updateRides();
         }
-        updateDateTime(((SpinnerDateModel)dateModel).getDate());
-        updateRides();
     }
 
     private void updateRides() {
@@ -176,8 +166,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
             Pin pin = new Pin(thisRide);
             pin.addMouseListener(this);
             mapView.add(pin, new Integer(1));
-            pin.setBounds(rideLocation.getX() - 5, rideLocation.getY() - 16, 11, 18);
-            // TODO change 5 and 16 to constants. they are the relative location of the point of the pin to its top left corner. 11 and 18 are the dimensions of a pin
+            pin.setBounds(rideLocation.getX() - Pin.OFFSETX, rideLocation.getY() - Pin.OFFSETY, Pin.WIDTH, Pin.HEIGHT);
         }
     }
 
