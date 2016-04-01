@@ -28,30 +28,34 @@ public class ServerClientThread implements Runnable {
 	}
 
 	public void start() {
-		//Initialise protocol here?
 
 	}
 
 	public void run() {
+		
 		try {
+			
 			ProtocolObject input = null;
+			
 			while((input = (ProtocolObject) in.readObject()) != null){
-				this.processInput(input); //Surround with try catcth?
-				/*
-				 * TODO is this valid???
-				 * This might make the server close immediately after starting
-				 * because that will be null when there's no client currently sending a request
-				 * 
-				 * Who knows???
-				 */
+				
+				if(input.isMessage()){
+					this.handleMessage((MessageObject) input);
+				} else {
+					//Should be an sql-able object send it to the server to query data base
+				}
 				
 			}
-		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
+			
+		} catch (ClassNotFoundException eClass) {
+			this.sendErrorMessageToClient("ERROR"); //TODO
 			//Send error message to client. Try to handle failure more gracefully.
+		} catch (IOException eIO) {
+			eIO.printStackTrace();
 		} finally {
 			this.close();
 		}
+		
 	}
 
 	public void close(){
@@ -59,22 +63,33 @@ public class ServerClientThread implements Runnable {
 			in.close();
 			out.close();
 			myServerSocket.close();
+			Thread.currentThread().interrupt();
+			return;
+			//This should stop the current thread
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	private void processInput(ProtocolObject inObject){
-		if(inObject.isMessage()){
-			this.handleMessage((MessageObject) inObject);
-		} else {
-			//probably just send SQL stuff to be processed
+		
+	private void handleMessage(MessageObject inMessage) {
+		switch(inMessage.getMessage()){
+		
+		case CLIENT_QUIT:
+			this.close();
+			
+		//Is there another relevant case?? TODO
+
+		default:
+			this.sendErrorMessageToClient("ERROR"); //TODO
+			break;
+		
 		}
 	}
 	
-	private void handleMessage(MessageObject inObject) {
-		// TODO Auto-generated method stub
-		
+	private void sendErrorMessageToClient(String errorDescription) {
+		processOutput(new MessageObject(
+				MessageContent.GENERAL_ERROR, 
+				errorDescription));
 	}
 
 	private void processOutput(ProtocolObject outObject){
