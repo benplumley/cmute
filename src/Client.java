@@ -19,6 +19,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     private DateTime dateAndTime;
     private int timeTolerance = TOLERANCE_INIT;
     private Ride[] currentRides;
+    private Boolean newListing = false;
     private JLayeredPane mapView;
     private JSpinner dateSpinner;
     private static final int TOLERANCE_MIN = 0;
@@ -126,6 +127,10 @@ public class Client extends JPanel implements ActionListener, MouseListener,
             case "FROM UNI":
                 isToUni = false;
                 break;
+            case "New Listing":
+                newListing = true;
+                createNewListing();
+                break;
         }
         updateRides();
     }
@@ -194,6 +199,34 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     private void updateDateTime(Date date) {
         long epochDate = date.getTime();
         dateAndTime = new DateTime(epochDate);
+    }
+
+    private void createNewListing() {
+        currentRides = null;
+        Ride newRide;
+        confirmCreate(newRide);
+        // TODO hide the current rides, let the user select a time, direction and then click an end point on the map. Disable the tolerance slider. When they've clicked, give them a confirmation message with the text changed to reflect making a listing instead of booking. Change the List button to Cancel.
+    }
+
+    private void confirmCreate(Ride ride) {
+        Object[] options = {"Create this listing!", "Cancel"};
+        int confirmed = JOptionPane.showOptionDialog(this,
+            ride.getReadableDescription(),
+            "Confirm Creation",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            options,
+            options[0]);
+        Boolean successful = false;
+        if (confirmed == JOptionPane.YES_OPTION) {
+            successful = connection.book(ride);
+            if (successful) {
+                JOptionPane.showMessageDialog(this, "Your ride was listed successfully.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Your listing failed.");
+            }
+        }
     }
 
 }
