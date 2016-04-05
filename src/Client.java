@@ -220,7 +220,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
             options[0]);
         Boolean successful = false;
         if (confirmed == JOptionPane.YES_OPTION) {
-            successful = connection.book(ride);
+            successful = connection.list(ride);
             if (successful) {
                 JOptionPane.showMessageDialog(this, "Your ride was listed successfully.");
             } else {

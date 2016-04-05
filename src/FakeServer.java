@@ -29,4 +29,9 @@ public class FakeServer {
         return false;
     }
 
+    public Boolean list(Ride ride) {
+        // TODO
+        return false;
+    }
+
 }

@@ -56,4 +56,9 @@ public class ClientConnection {
         return false;
     }
 
+    public Boolean list(Ride ride) {
+        // TODO
+        return false;
+    }
+
 }
