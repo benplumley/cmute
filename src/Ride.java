@@ -11,11 +11,11 @@ public class Ride implements java.io.Serializable {
     private Boolean isToUni;
     private DateTime dateAndTime;
     private MapPoint startLocation;
-	private byte repeatingDays;
-	private byte numberOfSeats;
-	private byte seatsRemaining;
+	private int repeatingDays;
+	private int numberOfSeats;
+	private int seatsRemaining;
 
-	public Ride(Boolean isToUni, MapPoint startLocation, DateTime dateAndTime, byte repeatingDays, byte numberOfSeats, byte seatsRemaining) {
+	public Ride(Boolean isToUni, MapPoint startLocation, DateTime dateAndTime, int repeatingDays, int numberOfSeats, int seatsRemaining) {
         this.isToUni = isToUni;
 		this.startLocation = startLocation;
 		this.dateAndTime = dateAndTime;
