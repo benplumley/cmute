@@ -7,4 +7,8 @@ public class RideCollectionResults extends ServerToClient {
 		super();
 	}
 
+    public Ride[] getRides() {
+        return null; // TODO implement this
+    }
+
 }

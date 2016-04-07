@@ -24,6 +24,17 @@ public class Ride implements java.io.Serializable {
 		this.seatsRemaining = seatsRemaining;
 	}
 
+    public Ride(int UUID, Boolean isToUni, MapPoint startLocation, DateTime dateAndTime, int repeatingDays, int numberOfSeats, int seatsRemaining) {
+        // constructor for the server
+        this.UUID = UUID;
+        this.isToUni = isToUni;
+		this.startLocation = startLocation;
+		this.dateAndTime = dateAndTime;
+		this.repeatingDays = repeatingDays;
+		this.numberOfSeats = numberOfSeats;
+		this.seatsRemaining = seatsRemaining;
+	}
+
     public MapPoint getLocation() {
         return startLocation;
     }

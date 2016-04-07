@@ -31,6 +31,14 @@ public class ClientConnection {
     public Ride[] getMatchingRides(Boolean isToUni, DateTime dateAndTime, int timeTolerance) {
         Object rideQuery = new Query(isToUni, dateAndTime, timeTolerance);
         Ride[] response = null;
+        input = (ProtocolObject) in.readObject();
+
+        if(input.isMessage()){
+            this.handleMessage((MessageObject) input);
+        } else {
+            //Should be an sql-able object send it to the server to query data base
+            response = input.getRides();
+        }
         try {
             out.writeObject(rideQuery);
             response = (Ride[]) in.readObject();
@@ -43,6 +51,7 @@ public class ClientConnection {
 
     public void close() {
 		try {
+            // TODO send disconnect object
 			in.close();
 			out.close();
 			socket.close();
