@@ -156,7 +156,6 @@ public class Client extends JPanel implements ActionListener, MouseListener,
             MapPoint location = new MapPoint(e.getX(), e.getY());
             locationChosen(location);
         }
-
     }
 
     public void mousePressed(MouseEvent e) {}
@@ -175,8 +174,10 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     }
 
     private void updateRides() {
-        currentRides = connection.getMatchingRides(isToUni, dateAndTime, timeTolerance);
-        updateMap();
+        if (!newListing) {
+            currentRides = connection.getMatchingRides(isToUni, dateAndTime, timeTolerance);
+            updateMap();
+        }
     }
 
     private void updateMap() {
@@ -217,12 +218,10 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     private void updateDateTime(Date date) {
         long epochDate = date.getTime();
         dateAndTime = new DateTime(epochDate);
-
     }
 
     private void createNewListing() {
         toleranceSlider.setEnabled(false);
-        // Arrays.fill(currentRides, null);
         currentRides = new Ride[0];
         updateMap();
         newListingButton.setText("Cancel");
@@ -236,7 +235,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 
     private void locationChosen(MapPoint location) {
         Ride newRide = new Ride(isToUni, location, dateAndTime, 0, 5, 5);
-        currentRides[0] = newRide;
+        currentRides = new Ride[] {newRide};
         updateMap();
         confirmCreate(newRide);
     }

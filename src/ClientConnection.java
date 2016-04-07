@@ -41,6 +41,8 @@ public class ClientConnection {
             }
             out.writeObject(rideQuery);
             response = (Ride[]) in.readObject();
+
+            // TODO send query and recieve response
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Error requesting matching rides:");
             System.err.println(e.getMessage());
@@ -50,7 +52,7 @@ public class ClientConnection {
 
     public void close() {
 		try {
-            // TODO send disconnect object
+            out.writeObject(new MessageObject(MessageContent.CLIENT_QUIT, "Connection closed by client."));
 			in.close();
 			out.close();
 			socket.close();
