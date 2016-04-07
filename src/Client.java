@@ -138,6 +138,10 @@ public class Client extends JPanel implements ActionListener, MouseListener,
                 newListing = true;
                 createNewListing();
                 break;
+            case "Cancel":
+                newListing = false;
+                cancelNewListing();
+                break;
         }
         updateRides();
     }
@@ -218,13 +222,22 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 
     private void createNewListing() {
         toleranceSlider.setEnabled(false);
-        currentRides = null;
+        // Arrays.fill(currentRides, null);
+        currentRides = new Ride[0];
+        updateMap();
         newListingButton.setText("Cancel");
         // TODO hide the current rides, let the user select a time, direction and then click an end point on the map. Disable the tolerance slider. When they've clicked, give them a confirmation message with the text changed to reflect making a listing instead of booking. Change the List button to Cancel.
     }
 
+    private void cancelNewListing() {
+        toleranceSlider.setEnabled(true);
+        newListingButton.setText("New Listing");
+    }
+
     private void locationChosen(MapPoint location) {
         Ride newRide = new Ride(isToUni, location, dateAndTime, 0, 5, 5);
+        currentRides[0] = newRide;
+        updateMap();
         confirmCreate(newRide);
     }
 
