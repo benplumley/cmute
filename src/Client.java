@@ -9,23 +9,25 @@ import java.util.Date;
 public class Client extends JPanel implements ActionListener, MouseListener,
     ChangeListener, Runnable {
 
+    private static final int MS_IN_DAY = (24 * 60 * 60 * 1000);
+    private static final int TOLERANCE_MIN = 0;
+    private static final int TOLERANCE_MAX = 60;
+    private static final int TOLERANCE_INIT = 5;
+
 	private static String hostname = "localhost";
 	private static int portNumber = 55511;
-    private static final int MS_IN_DAY = (24 * 60 * 60 * 1000);
 	private Map map = new Map();
     // private ClientConnection connection;
     private FakeServer connection; // TODO for debugging
     private Boolean isToUni = true;
+    private Boolean newListing = false;
     private DateTime dateAndTime = new DateTime((new Date()).getTime());
     private int timeTolerance = TOLERANCE_INIT;
     private Ride[] currentRides;
-    private Boolean newListing = false;
+
     private JLayeredPane mapView;
     private JSpinner dateSpinner;
     private JButton newListingButton;
-    private static final int TOLERANCE_MIN = 0;
-    private static final int TOLERANCE_MAX = 60;
-    private static final int TOLERANCE_INIT = 5;
     private JSlider toleranceSlider;
     private JLabel toleranceLabel;
 
@@ -42,6 +44,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 		setupFrame();
 		// connection = new ClientConnection(hostname, portNumber);
 		connection = new FakeServer(); // TODO for debugging
+        updateRides();
 	}
 
 	private void setupFrame() {
@@ -117,12 +120,9 @@ public class Client extends JPanel implements ActionListener, MouseListener,
         layoutConstraints.weightx = 0.25;
 		frame.add(toleranceSlider, layoutConstraints);
         layoutConstraints.gridx = 2;
-        layoutConstraints.weightx = 0.25;
         frame.add(toleranceLabel, layoutConstraints);
         layoutConstraints.gridx = 3;
-        layoutConstraints.weightx = 0.25;
         frame.add(newListingButton, layoutConstraints);
-
 	}
 
     public void actionPerformed(ActionEvent e) {
@@ -182,7 +182,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 
     private void updateMap() {
         for (Component oldPin : mapView.getComponentsInLayer(1)) {
-            mapView.remove(mapView.getIndexOf(oldPin));
+            mapView.remove(mapView.getIndexOf(oldPin)); // remove all old pins from the panel
         }
         mapView.repaint();
         for (Ride thisRide : currentRides) {
@@ -225,7 +225,6 @@ public class Client extends JPanel implements ActionListener, MouseListener,
         currentRides = new Ride[0];
         updateMap();
         newListingButton.setText("Cancel");
-        // TODO hide the current rides, let the user select a time, direction and then click an end point on the map. Disable the tolerance slider. When they've clicked, give them a confirmation message with the text changed to reflect making a listing instead of booking. Change the List button to Cancel.
     }
 
     private void cancelNewListing() {
@@ -235,6 +234,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 
     private void locationChosen(MapPoint location) {
         Ride newRide = new Ride(isToUni, location, dateAndTime, 0, 5, 5);
+        // TODO allow the user to change repeats and number of seats
         currentRides = new Ride[] {newRide};
         updateMap();
         confirmCreate(newRide);

@@ -11,7 +11,7 @@ public class FakeServer {
         byte four = 4;
         if (isToUni) {
             Ride[] result = {new Ride(true, new MapPoint(30,85), new DateTime(1459183241000L),zero,four,four),
-                             new Ride(true, new MapPoint(35,85), new DateTime(1459189641000L),zero,four,four),
+                             new Ride(true, new MapPoint(80,85), new DateTime(1459189641000L),zero,four,four),
                              new Ride(true, new MapPoint(305,150), new DateTime(1459189641000L),zero,four,four),
                              new Ride(true, new MapPoint(720,300), new DateTime(1459189641000L), zero,four,four)};
             return result;
