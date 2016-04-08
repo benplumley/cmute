@@ -105,6 +105,9 @@ public class Client extends JPanel implements ActionListener, MouseListener,
         toleranceLabel = new JLabel("\u00B1" + timeTolerance + "m");
         newListingButton = new JButton("New Listing");
         newListingButton.addActionListener(this);
+        repeatingDaysButton = new JButton("Set Repetitions");
+        String[] seatOptions = {"1", "2", "3", "4", "5", "6"};
+        seatCountBox = new JComboBox<String>(seatOptions);
 
 		GridBagConstraints layoutConstraints = new GridBagConstraints();
 		layoutConstraints.gridx = 0;
