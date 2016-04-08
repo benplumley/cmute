@@ -24,10 +24,14 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     private DateTime dateAndTime = new DateTime((new Date()).getTime());
     private int timeTolerance = TOLERANCE_INIT;
     private Ride[] currentRides;
+    private int newSeatCount = 3;
+    private int repeatingDays = 0;
 
     private JLayeredPane mapView;
     private JSpinner dateSpinner;
     private JButton newListingButton;
+    private JButton repeatingDaysButton;
+    private JComboBox seatCountBox;
     private JSlider toleranceSlider;
     private JLabel toleranceLabel;
 
