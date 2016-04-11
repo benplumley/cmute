@@ -34,9 +34,9 @@ public class ClientConnection {
         try {
             out.writeObject(rideQuery);
             ProtocolObject response = (ProtocolObject) in.readObject();
-            if (response.isMessage()) {
+            if (response.isMessage()) { // the server returned an error
                 handleMessage((MessageObject) response);
-            } else {
+            } else { // the server returned rides
                 responseRides = ((RideCollectionResults) response).getRides();
             }
         } catch (IOException | ClassNotFoundException e) {
