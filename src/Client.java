@@ -25,7 +25,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     private int timeTolerance = TOLERANCE_INIT;
     private Ride[] currentRides;
     private int newSeatCount = 3;
-    private int repeatingDays = 0;
+    private Repetitions repeatingDays;
 
     private JLayeredPane mapView;
     private JSpinner dateSpinner;
@@ -60,7 +60,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 		window.pack();
 		window.setLocationByPlatform(true);
 		window.setVisible(true);
-		Dimension windowSize = new Dimension(816, 543);
+		Dimension windowSize = new Dimension(816, 542);
 		window.setSize(windowSize);
 		window.setResizable(true);
 	}
@@ -106,8 +106,10 @@ public class Client extends JPanel implements ActionListener, MouseListener,
         newListingButton = new JButton("New Listing");
         newListingButton.addActionListener(this);
         repeatingDaysButton = new JButton("Set Repetitions");
+        repeatingDaysButton.setVisible(false);
         String[] seatOptions = {"1", "2", "3", "4", "5", "6"};
         seatCountBox = new JComboBox<String>(seatOptions);
+        seatCountBox.setVisible(false);
 
 		GridBagConstraints layoutConstraints = new GridBagConstraints();
 		layoutConstraints.gridx = 0;
@@ -126,8 +128,10 @@ public class Client extends JPanel implements ActionListener, MouseListener,
         layoutConstraints.gridx = 1;
         layoutConstraints.weightx = 0.25;
 		frame.add(toleranceSlider, layoutConstraints);
+        frame.add(repeatingDaysButton, layoutConstraints);
         layoutConstraints.gridx = 2;
         frame.add(toleranceLabel, layoutConstraints);
+        frame.add(seatCountBox, layoutConstraints);
         layoutConstraints.gridx = 3;
         frame.add(newListingButton, layoutConstraints);
 	}
@@ -148,6 +152,9 @@ public class Client extends JPanel implements ActionListener, MouseListener,
             case "Cancel":
                 newListing = false;
                 cancelNewListing();
+                break;
+            case "Set Repetitions":
+                showRepetitionDialog();
                 break;
         }
         updateRides();
@@ -228,15 +235,23 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     }
 
     private void createNewListing() {
-        toleranceSlider.setEnabled(false);
+        toggleListingButtons(false);
         currentRides = new Ride[0];
         updateMap();
         newListingButton.setText("Cancel");
     }
 
     private void cancelNewListing() {
-        toleranceSlider.setEnabled(true);
+        toggleListingButtons(true);
         newListingButton.setText("New Listing");
+    }
+
+    private void toggleListingButtons(Boolean state) {
+        toleranceSlider.setVisible(state);
+        toleranceLabel.setVisible(state);
+        toleranceSlider.setEnabled(state);
+        seatCountBox.setVisible(!state);
+        repeatingDaysButton.setVisible(!state);
     }
 
     private void locationChosen(MapPoint location) {
@@ -245,6 +260,11 @@ public class Client extends JPanel implements ActionListener, MouseListener,
         currentRides = new Ride[] {newRide};
         updateMap();
         confirmCreate(newRide);
+    }
+
+    private void showRepetitionDialog() {
+
+        repetitions = new Repetitions();
     }
 
     private void confirmCreate(Ride ride) {
