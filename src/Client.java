@@ -19,7 +19,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 	private Map map = new Map();
     // private ClientConnection connection;
     private FakeServer connection; // TODO for debugging
-    private Boolean isToUni = true;
+    private Boolean isToUni = false;
     private Boolean newListing = false;
     private DateTime dateAndTime = new DateTime((new Date()).getTime());
     private int timeTolerance = TOLERANCE_INIT;
@@ -41,12 +41,12 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 
 	public Client() {
 		Thread thread = new Thread(this);
-		thread.start();
+        thread.start();
 	}
 
 	public void run() {
 		setupFrame();
-		// connection = new ClientConnection(hostname, portNumber);
+        // connection = new ClientConnection(hostname, portNumber);
 		connection = new FakeServer(); // TODO for debugging
         updateRides();
 	}
@@ -165,7 +165,6 @@ public class Client extends JPanel implements ActionListener, MouseListener,
         } else if (source instanceof JComboBox) {
             String seatString = seatCountBox.getSelectedItem().toString().split(" ")[0];
             newSeatCount = Integer.parseInt(seatString);
-            System.out.println(newSeatCount);
         }
         updateRides();
     }
