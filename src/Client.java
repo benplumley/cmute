@@ -108,9 +108,11 @@ public class Client extends JPanel implements ActionListener, MouseListener,
         repeatingDaysButton = new JButton("Set Repetitions");
         repeatingDaysButton.setVisible(false);
         repeatingDaysButton.addActionListener(this);
-        String[] seatOptions = {"1", "2", "3", "4", "5", "6"};
+        String[] seatOptions = {"1 spare seat", "2 spare seats", "3 spare seats", "4 spare seats", "5 spare seats", "6 spare seats"};
         seatCountBox = new JComboBox<String>(seatOptions);
+        seatCountBox.setSelectedIndex(newSeatCount - 1);
         seatCountBox.setVisible(false);
+        seatCountBox.addActionListener(this);
 
 		GridBagConstraints layoutConstraints = new GridBagConstraints();
 		layoutConstraints.gridx = 0;
@@ -138,25 +140,32 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 	}
 
     public void actionPerformed(ActionEvent e) {
-        String actionPerformed = e.getActionCommand();
-        switch (actionPerformed) {
-            case "TO UNI":
-                isToUni = true;
-                break;
-            case "FROM UNI":
-                isToUni = false;
-                break;
-            case "New Listing":
-                newListing = true;
-                createNewListing();
-                break;
-            case "Cancel":
-                newListing = false;
-                cancelNewListing();
-                break;
-            case "Set Repetitions":
-                showRepetitionDialog();
-                break;
+        Object source = e.getSource();
+        if (source instanceof JButton) {
+            String actionPerformed = e.getActionCommand();
+            switch (actionPerformed) {
+                case "TO UNI":
+                    isToUni = true;
+                    break;
+                case "FROM UNI":
+                    isToUni = false;
+                    break;
+                case "New Listing":
+                    newListing = true;
+                    createNewListing();
+                    break;
+                case "Cancel":
+                    newListing = false;
+                    cancelNewListing();
+                    break;
+                case "Set Repetitions":
+                    showRepetitionDialog();
+                    break;
+            }
+        } else if (source instanceof JComboBox) {
+            String seatString = seatCountBox.getSelectedItem().toString().split(" ")[0];
+            newSeatCount = Integer.parseInt(seatString);
+            System.out.println(newSeatCount);
         }
         updateRides();
     }
@@ -256,8 +265,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     }
 
     private void locationChosen(MapPoint location) {
-        Ride newRide = new Ride(isToUni, location, dateAndTime, 0, 5, 5);
-        // TODO allow the user to change repeats and number of seats
+        Ride newRide = new Ride(isToUni, location, dateAndTime, repeatingDays.toInteger(), newSeatCount, newSeatCount);
         currentRides = new Ride[] {newRide};
         updateMap();
         confirmCreate(newRide);
