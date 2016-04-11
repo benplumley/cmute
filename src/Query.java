@@ -1,7 +1,7 @@
 // Query class should be accessible to both client and server so that the same
 // code is used for serialisation as deserialisation.
 
-public class Query implements java.io.Serializable {
+public class Query extends ClientToServer implements java.io.Serializable {
 
 	private static final long serialVersionUID = 8969042836485710757L;
 	//http://stackoverflow.com/questions/285793/what-is-a-serialversionuid-and-why-should-i-use-it

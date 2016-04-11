@@ -30,24 +30,20 @@ public class ClientConnection {
 
     public Ride[] getMatchingRides(Boolean isToUni, DateTime dateAndTime, int timeTolerance) {
         Object rideQuery = new Query(isToUni, dateAndTime, timeTolerance);
-        Ride[] response = null;
+        Ride[] responseRides = null;
         try {
-            ProtocolObject input = (ProtocolObject) in.readObject();
-            if(input.isMessage()){
-                this.handleMessage((MessageObject) input);
-            } else {
-                //Should be an sql-able object send it to the server to query data base
-                response = ((RideCollectionResults) input).getRides();
-            }
             out.writeObject(rideQuery);
-            response = (Ride[]) in.readObject();
-
-            // TODO send query and recieve response
+            ProtocolObject response = (ProtocolObject) in.readObject();
+            if (response.isMessage()) {
+                handleMessage((MessageObject) response);
+            } else {
+                responseRides = ((RideCollectionResults) response).getRides();
+            }
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Error requesting matching rides:");
             System.err.println(e.getMessage());
         }
-        return response;
+        return responseRides;
     }
 
     public void close() {
