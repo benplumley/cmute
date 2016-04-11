@@ -25,7 +25,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     private int timeTolerance = TOLERANCE_INIT;
     private Ride[] currentRides;
     private int newSeatCount = 3;
-    private Repetitions repeatingDays;
+    private Repetitions repeatingDays = new Repetitions();
 
     private JLayeredPane mapView;
     private JSpinner dateSpinner;
@@ -264,15 +264,14 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     }
 
     private void showRepetitionDialog() {
-        JDialog repetitionDialog = new JDialog((Frame) null, "Set which days this ride will repeat on", true);
         JPanel checkBoxes = new JPanel();
-        JCheckBox monday = new JCheckBox("Monday");
-        JCheckBox tuesday = new JCheckBox("Tuesday");
-        JCheckBox wednesday = new JCheckBox("Wednesday");
-        JCheckBox thursday = new JCheckBox("Thursday");
-        JCheckBox friday = new JCheckBox("Friday");
-        JCheckBox saturday = new JCheckBox("Saturday");
-        JCheckBox sunday = new JCheckBox("Sunday");
+        JCheckBox monday = new JCheckBox("Monday", repeatingDays.getByIndex(0));
+        JCheckBox tuesday = new JCheckBox("Tuesday", repeatingDays.getByIndex(1));
+        JCheckBox wednesday = new JCheckBox("Wednesday", repeatingDays.getByIndex(2));
+        JCheckBox thursday = new JCheckBox("Thursday", repeatingDays.getByIndex(3));
+        JCheckBox friday = new JCheckBox("Friday", repeatingDays.getByIndex(4));
+        JCheckBox saturday = new JCheckBox("Saturday", repeatingDays.getByIndex(5));
+        JCheckBox sunday = new JCheckBox("Sunday", repeatingDays.getByIndex(6));
         checkBoxes.add(monday);
         checkBoxes.add(tuesday);
         checkBoxes.add(wednesday);
@@ -280,9 +279,18 @@ public class Client extends JPanel implements ActionListener, MouseListener,
         checkBoxes.add(friday);
         checkBoxes.add(saturday);
         checkBoxes.add(sunday);
-        repetitionDialog.add(checkBoxes);
-        repetitionDialog.setVisible(true);
-        repeatingDays = new Repetitions();
+        Object[] options = {"Confirm", "Cancel"};
+        int confirmed = JOptionPane.showOptionDialog(this,
+            checkBoxes,
+            "Set which days this ride will repeat on",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            options,
+            options[0]);
+        if (confirmed == JOptionPane.YES_OPTION) {
+            repeatingDays = new Repetitions(monday.isSelected(), tuesday.isSelected(), wednesday.isSelected(), thursday.isSelected(), friday.isSelected(), saturday.isSelected(), sunday.isSelected());
+        }
     }
 
     private void confirmCreate(Ride ride) {
