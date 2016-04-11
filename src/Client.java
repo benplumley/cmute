@@ -107,6 +107,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
         newListingButton.addActionListener(this);
         repeatingDaysButton = new JButton("Set Repetitions");
         repeatingDaysButton.setVisible(false);
+        repeatingDaysButton.addActionListener(this);
         String[] seatOptions = {"1", "2", "3", "4", "5", "6"};
         seatCountBox = new JComboBox<String>(seatOptions);
         seatCountBox.setVisible(false);
@@ -263,8 +264,25 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     }
 
     private void showRepetitionDialog() {
-
-        repetitions = new Repetitions();
+        JDialog repetitionDialog = new JDialog((Frame) null, "Set which days this ride will repeat on", true);
+        JPanel checkBoxes = new JPanel();
+        JCheckBox monday = new JCheckBox("Monday");
+        JCheckBox tuesday = new JCheckBox("Tuesday");
+        JCheckBox wednesday = new JCheckBox("Wednesday");
+        JCheckBox thursday = new JCheckBox("Thursday");
+        JCheckBox friday = new JCheckBox("Friday");
+        JCheckBox saturday = new JCheckBox("Saturday");
+        JCheckBox sunday = new JCheckBox("Sunday");
+        checkBoxes.add(monday);
+        checkBoxes.add(tuesday);
+        checkBoxes.add(wednesday);
+        checkBoxes.add(thursday);
+        checkBoxes.add(friday);
+        checkBoxes.add(saturday);
+        checkBoxes.add(sunday);
+        repetitionDialog.add(checkBoxes);
+        repetitionDialog.setVisible(true);
+        repeatingDays = new Repetitions();
     }
 
     private void confirmCreate(Ride ride) {
