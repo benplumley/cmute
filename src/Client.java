@@ -171,12 +171,16 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 
     public void mouseClicked(MouseEvent e) {
         Object source = e.getSource();
-        if (source instanceof Pin) {
+        if ((source instanceof Pin) && !newListing) {
             Ride rideSelected = ((Pin) e.getSource()).getRide();
             // get the ride associated with the pin the user clicked
             book(rideSelected);
         } else if ((source instanceof JLayeredPane) && newListing) {
             MapPoint location = new MapPoint(e.getX(), e.getY());
+            locationChosen(location);
+        } else if ((source instanceof Pin) && newListing) {
+            Ride ride = ((Pin) e.getSource()).getRide();
+            MapPoint location = ride.getLocation();
             locationChosen(location);
         }
     }
