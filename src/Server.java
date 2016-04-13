@@ -124,13 +124,11 @@ public class Server {
      * @param   The input SQL request.
      * @return  The relevant SQL results from the DB.
      */
-	public static synchronized String processSQLStatement(String sqlString) throws SQLException {
+	public static synchronized String processSQLStatement(String sqlString) throws ServerSQLException, SQLException {
 		//TODO yeah this is gonna need a lot of work
-		try {
-			connection.nativeSQL(sqlString);
-	    } catch (SQLException e ) {
-	    	e.printStackTrace();
-	    }
+
+		connection.nativeSQL(sqlString);
+
 		
 		return "Hello";
 	}

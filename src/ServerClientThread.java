@@ -49,14 +49,16 @@ public class ServerClientThread implements Runnable {
 						
 						Server.processSQLStatement(((ClientToServer) input).toSQLString());
 						
-					} catch (QueryFailureException QFE) {
-						this.sendErrorMessageToClient();
-					} catch (NewRideFailureException NRFE) {
-						this.sendErrorMessageToClient();
-					} catch (RideBookingFailureException RBFE) {
-						this.sendErrorMessageToClient();
-					} catch (SQLException SQLE) {
-						this.sendErrorMessageToClient();
+					}  catch (ServerSQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						this.sendErrorMessageToClient(MessageContent.GENERAL_ERROR ,"ERROR");
+						
+						
+						
+						
+					} catch (Exception e) {
+						this.sendErrorMessageToClient(MessageContent.GENERAL_ERROR ,e.getMessage());
 					}
 				}
 				
