@@ -44,33 +44,18 @@ public class ServerClientThread implements Runnable {
 					this.handleMessage((MessageObject) input);
 					
 				} else {
-					
-					try {
-						
-						Server.processSQLStatement(((ClientToServer) input).toSQLString());
-						
-					}  catch (ServerSQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						this.sendErrorMessageToClient(MessageContent.GENERAL_ERROR ,"ERROR");
-						
-						
-						
-						
-					} catch (Exception e) {
-						this.sendErrorMessageToClient(MessageContent.GENERAL_ERROR ,e.getMessage());
-					}
+					 this.handleRequest((ClientToServer) input);
 				}
 				
 			}
 			
 		} catch (ClassNotFoundException eClass) {
 			this.sendErrorMessageToClient(MessageContent.GENERAL_ERROR ,"ERROR"); //TODO
-			//Send error message to client. Try to handle failure more gracefully.
+			//Send error message to client. Try to handle failure more gracefully?
 		} catch (IOException eIO) {
 			eIO.printStackTrace();
 		} finally {
-			this.close();
+			this.close(); //TODO
 		}
 		
 	}
@@ -99,6 +84,25 @@ public class ServerClientThread implements Runnable {
 			System.err.println(inMessage.getMyDescription());
 			break;
 		
+		}
+	}
+	
+	private void handleRequest(ClientToServer inOb){
+		
+		if(inOb.isQuery()){
+			
+		} else {
+			try {
+				
+				Server.processSQLStatement(((ClientToServer) inOb).toSQLString());
+				
+			}  catch (ServerSQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				this.sendErrorMessageToClient(MessageContent.GENERAL_ERROR ,"ERROR");		
+			} catch (Exception e) {
+				this.sendErrorMessageToClient(MessageContent.GENERAL_ERROR ,e.getMessage());
+			}
 		}
 	}
 	
