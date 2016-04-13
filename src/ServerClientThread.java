@@ -40,15 +40,30 @@ public class ServerClientThread implements Runnable {
 			while((input = (ProtocolObject) in.readObject()) != null){
 				
 				if(input.isMessage()){
+					
 					this.handleMessage((MessageObject) input);
+					
 				} else {
-					//Should be an sql-able object send it to the server to query data base
+					
+					try {
+						
+						Server.processSQLStatement(((ClientToServer) input).toSQLString());
+						
+					} catch (QueryFailureException QFE) {
+						this.sendErrorMessageToClient();
+					} catch (NewRideFailureException NRFE) {
+						this.sendErrorMessageToClient();
+					} catch (RideBookingFailureException RBFE) {
+						this.sendErrorMessageToClient();
+					} catch (SQLException SQLE) {
+						this.sendErrorMessageToClient();
+					}
 				}
 				
 			}
 			
 		} catch (ClassNotFoundException eClass) {
-			this.sendErrorMessageToClient("ERROR"); //TODO
+			this.sendErrorMessageToClient(MessageContent.GENERAL_ERROR ,"ERROR"); //TODO
 			//Send error message to client. Try to handle failure more gracefully.
 		} catch (IOException eIO) {
 			eIO.printStackTrace();
@@ -76,19 +91,18 @@ public class ServerClientThread implements Runnable {
 		
 		case CLIENT_QUIT:
 			this.close();
-			
-		//Is there another relevant case?? TODO
 
 		default:
-			this.sendErrorMessageToClient("ERROR"); //TODO
+			System.err.println("ServerClientThread error");
+			System.err.println(inMessage.getMyDescription());
 			break;
 		
 		}
 	}
 	
-	private void sendErrorMessageToClient(String errorDescription) {
+	private void sendErrorMessageToClient(MessageContent errorContent, String errorDescription) {
 		processOutput(new MessageObject(
-				MessageContent.GENERAL_ERROR, 
+				errorContent, 
 				errorDescription));
 	}
 
