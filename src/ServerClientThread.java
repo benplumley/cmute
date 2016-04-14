@@ -94,7 +94,9 @@ public class ServerClientThread implements Runnable {
 		} else {
 			try {
 				
-				Server.processSQLStatement(((ClientToServer) inOb).toSQLString());
+				Server.processClientToServerObject(((ClientToServer) inOb));
+				
+				//send success message
 				
 			}  catch (ServerSQLException e) {
 				// TODO Auto-generated catch block

@@ -49,8 +49,6 @@ public class Server {
         try {
 	    	String userName   = args[1];
 	    	String password   = args[2];
-	    	String serverName = args[3];
-	    	String dbms       = args[4];
 	    	
 	        connection = null;
 	        Properties connectionProperties = new Properties();
@@ -58,12 +56,12 @@ public class Server {
 	        connectionProperties.put("user", userName);
 	        connectionProperties.put("password", password);
 	    	
-			connection = DriverManager.getConnection(
-			               "jdbc:" + serverName + "://" +
-			               dbms +
-			               ":" + portNumber + "/",
-			               connectionProperties);
-			
+	        
+	        connection = DriverManager.getConnection(
+	                   "jdbc:mysql://localhost:3306/",
+	                   connectionProperties);
+	       
+
 			System.out.println("Connected to database");
 	        connection.setAutoCommit(false); //TODO Is necessary?
 	        
@@ -122,15 +120,51 @@ public class Server {
      * for now it should be functional.
      * 
      * @param   The input SQL request.
-     * @return  The relevant SQL results from the DB.
      */
-	public static synchronized String processSQLStatement(String sqlString) throws ServerSQLException, SQLException {
+	public static synchronized void processClientToServerObject(ClientToServer in) throws ServerSQLException, SQLException {
 		//TODO yeah this is gonna need a lot of work
+		PreparedStatement pstmt;
 
-		connection.nativeSQL(sqlString);
-
+		pstmt = connection.prepareStatement("UPDATE COFFEES " +
+                "SET PRICE = ? " +
+                "WHERE COF_NAME = ?");
+		pstmt.setFloat(1, in.something());
+		pstmt.setString(2, cofName);
+		pstmt.executeUpdate();
+    
+		connection.commit();
+		pstmt.close();
 		
-		return "Hello";
+		
 	}
+	
+	public static void viewTable(Connection con, String dbName)
+		    throws SQLException {
+
+		    Statement stmt = null;
+		    String query =
+		        "select COF_NAME, SUP_ID, PRICE, " +
+		        "SALES, TOTAL " +
+		        "from " + dbName + ".COFFEES";
+
+		    try {
+		        stmt = con.createStatement();
+		        ResultSet rs = stmt.executeQuery(query);
+		        while (rs.next()) {
+		            String coffeeName = rs.getString("COF_NAME");
+		            int supplierID = rs.getInt("SUP_ID");
+		            float price = rs.getFloat("PRICE");
+		            int sales = rs.getInt("SALES");
+		            int total = rs.getInt("TOTAL");
+		            System.out.println(coffeeName + "\t" + supplierID +
+		                               "\t" + price + "\t" + sales +
+		                               "\t" + total);
+		        }
+		    } catch (SQLException e ) {
+		        JDBCTutorialUtilities.printSQLException(e);
+		    } finally {
+		        if (stmt != null) { stmt.close(); }
+		    }
+		}
 	
 }
