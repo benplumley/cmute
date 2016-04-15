@@ -110,19 +110,25 @@ public class Server {
 		}
     }
 
+	public static synchronized void processClientToServerObject(ClientToServer in) throws ServerSideException, SQLException {
 
-    /* 
-     * TODO May be necessary to seperate addding rides and getting rides. Review this decision
-     * 
-     * All SQL statements are processed here by this one method so
-     * as to avoid concurrency issues. This is, admittedly, a naïve
-     * implementation and admittedly would not be scalable. However
-     * for now it should be functional.
-     * 
-     * @param   The input SQL request.
-     */
-	public static synchronized void processClientToServerObject(ClientToServer in) throws ServerSQLException, SQLException {
-		//TODO yeah this is gonna need a lot of work
+		switch(in.getMyPurpose()){
+		
+		case QUERY:
+			
+		case NEW_RIDE:
+		
+		case RIDE_BOOKING:
+	
+		default:
+			throw new ServerSideException(MessageContent.COMMUNICATION_ERROR, "Invalid CTS object recieved");
+		}
+		
+		
+		
+		
+		
+		
 		PreparedStatement pstmt;
 
 		pstmt = connection.prepareStatement("UPDATE COFFEES " +
