@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.sql.SQLException;
 
 public class ServerClientThread implements Runnable {
 	
@@ -41,21 +40,24 @@ public class ServerClientThread implements Runnable {
 				
 				if(input.isMessage()){
 					
+					//A message has been recieved
+					//Probably (hopefully) just notification that client is quitting
 					this.handleMessage((MessageObject) input);
 					
 				} else {
-					 this.handleRequest((ClientToServer) input);
+					//A request of some form has been made handle it
+					this.handleCTSObject((ClientToServer) input);
 				}
 				
 			}
 			
 		} catch (ClassNotFoundException eClass) {
-			this.sendErrorMessageToClient(MessageContent.GENERAL_ERROR ,"ERROR"); //TODO
-			//Send error message to client. Try to handle failure more gracefully?
+			this.sendMessageToClient(MessageContent.COMMUNICATION_ERROR, "Invalid object recieved");
+			//Send error message to client. Just in case.
 		} catch (IOException eIO) {
 			eIO.printStackTrace();
 		} finally {
-			this.close(); //TODO
+			this.close();
 		}
 		
 	}
@@ -80,6 +82,7 @@ public class ServerClientThread implements Runnable {
 			this.close();
 
 		default:
+			sendMessageToClient(MessageContent.COMMUNICATION_ERROR, "You sent a bad message???");
 			System.err.println("ServerClientThread error");
 			System.err.println(inMessage.getMyDescription());
 			break;
@@ -87,45 +90,61 @@ public class ServerClientThread implements Runnable {
 		}
 	}
 	
-	private void handleRequest(ClientToServer inOb){
+	private void handleCTSObject(ClientToServer inOb){
 		
-		if(inOb.isQuery()){
+		try {
 			
-		} else {
-			try {
+			//Queries are handled differently because server has to return object
+			if(inOb.getMyPurpose().equals(ClientToServerPurpose.QUERY)){
 				
-				Server.processClientToServerObject(((ClientToServer) inOb));
+				//Get the results and send them!
+				sendOutput(Server.getQueryResults((Query) inOb));
 				
-				//send success message
+			} else {
 				
-			}  catch (ServerSQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				this.sendErrorMessageToClient(MessageContent.GENERAL_ERROR ,"ERROR");		
-			} catch (Exception e) {
-				this.sendErrorMessageToClient(MessageContent.GENERAL_ERROR ,e.getMessage());
+				//Try to update the server
+				Server.processClientToServerObject(inOb);
+				
+				//If an error has not been thrown then send success message
+				switch(inOb.getMyPurpose()){
+					case NEW_RIDE:
+						sendMessageToClient(MessageContent.NEW_RIDE_CONFIRMATION, 
+								"Ride succesfully posted.");
+						break;
+						
+					case RIDE_BOOKING:
+						sendMessageToClient(MessageContent.RIDE_BOOKING_CONFIRMATION, 
+								"Ride succesfully booked.");
+						break;
+						
+					default:
+						//lol this should not happen
+						break;
+				}
 			}
+			
+		} catch (ServerSideException e) {
+			sendOutput(e.getMessageObject()); //A failure has occured, send info to client.
 		}
+		
 	}
-	
-	private void sendErrorMessageToClient(MessageContent errorContent, String errorDescription) {
-		processOutput(new MessageObject(
+
+
+	private void sendMessageToClient(MessageContent errorContent, String errorDescription) {
+		sendOutput(new MessageObject(
 				errorContent, 
 				errorDescription));
 	}
 
-	private void processOutput(ProtocolObject outObject){
-		
-	}
-	
-	private void sendRequestResults(Ride[] requestResult){
+	private void sendOutput(ProtocolObject objectToSend) {
+		//TODO REVIEW THIS
 		try {
-			out.writeObject(requestResult);
+			out.writeObject(objectToSend);
 			out.flush();
 		} catch (IOException e) {
-			//Shit got fucked
 			System.err.println(e.getMessage());
 		}
+		
 	}
 
 }

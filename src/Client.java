@@ -326,7 +326,15 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     }
 
     public void handleMessage(MessageObject message) {
-        // TODO
+    	//TODO 
+		switch(message.getMessage()){
+		
+		case GENERAL_ERROR:
+			break;
+			
+		default:
+			break;
+	}
     }
 
 }

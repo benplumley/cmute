@@ -110,67 +110,81 @@ public class Server {
 		}
     }
 
-	public static synchronized void processClientToServerObject(ClientToServer in) throws ServerSideException, SQLException {
+	public static synchronized void processClientToServerObject(ClientToServer in) throws ServerSideException{
 
+		PreparedStatement pstmt;
+		
 		switch(in.getMyPurpose()){
 		
 		case QUERY:
+			//TODO THIS IS GONNA NEED SOME FUCKING WORK
 			
 		case NEW_RIDE:
+
+			try {
+				pstmt = connection.prepareStatement(
+					"UPDATE COFFEES " +
+				    "SET PRICE = ? " +
+				    "WHERE COF_NAME = ?");
+				pstmt.executeUpdate();
+				connection.commit();
+				pstmt.close();
+			} catch (SQLException e) {
+				throw new ServerSideException(MessageContent.NEW_RIDE_FAILURE, "Unable to post ride");
+			}
 		
 		case RIDE_BOOKING:
+			
+			try {
+				pstmt = connection.prepareStatement(
+					"UPDATE COFFEES " +
+				    "SET PRICE = ? " +
+				    "WHERE COF_NAME = ?");
+				pstmt.executeUpdate();
+				connection.commit();
+				pstmt.close();
+			} catch (SQLException e) {
+				throw new ServerSideException(MessageContent.RIDE_BOOKING_FAILURE, "Unable to book ride");
+			}
 	
 		default:
 			throw new ServerSideException(MessageContent.COMMUNICATION_ERROR, "Invalid CTS object recieved");
 		}
 		
 		
-		
-		
-		
-		
-		PreparedStatement pstmt;
-
-		pstmt = connection.prepareStatement("UPDATE COFFEES " +
-                "SET PRICE = ? " +
-                "WHERE COF_NAME = ?");
-		pstmt.setFloat(1, in.something());
-		pstmt.setString(2, cofName);
-		pstmt.executeUpdate();
-    
-		connection.commit();
-		pstmt.close();
-		
-		
 	}
 	
-	public static void viewTable(Connection con, String dbName)
-		    throws SQLException {
+	public static void viewTable(Connection con, String dbName) throws SQLException {
+//
+//		    Statement stmt = null;
+//		    String query =
+//		        "select COF_NAME, SUP_ID, PRICE, " +
+//		        "SALES, TOTAL " +
+//		        "from " + dbName + ".COFFEES";
+//
+//		    try {
+//		        stmt = con.createStatement();
+//		        ResultSet rs = stmt.executeQuery(query);
+//		        while (rs.next()) {
+//		            String coffeeName = rs.getString("COF_NAME");
+//		            int supplierID = rs.getInt("SUP_ID");
+//		            float price = rs.getFloat("PRICE");
+//		            int sales = rs.getInt("SALES");
+//		            int total = rs.getInt("TOTAL");
+//		            System.out.println(coffeeName + "\t" + supplierID +
+//		                               "\t" + price + "\t" + sales +
+//		                               "\t" + total);
+//		        }
+//		    } catch (SQLException e ) {
+//		        JDBCTutorialUtilities.printSQLException(e);
+//		    } finally {
+//		        if (stmt != null) { stmt.close(); }
+//		    }
+	}
 
-		    Statement stmt = null;
-		    String query =
-		        "select COF_NAME, SUP_ID, PRICE, " +
-		        "SALES, TOTAL " +
-		        "from " + dbName + ".COFFEES";
-
-		    try {
-		        stmt = con.createStatement();
-		        ResultSet rs = stmt.executeQuery(query);
-		        while (rs.next()) {
-		            String coffeeName = rs.getString("COF_NAME");
-		            int supplierID = rs.getInt("SUP_ID");
-		            float price = rs.getFloat("PRICE");
-		            int sales = rs.getInt("SALES");
-		            int total = rs.getInt("TOTAL");
-		            System.out.println(coffeeName + "\t" + supplierID +
-		                               "\t" + price + "\t" + sales +
-		                               "\t" + total);
-		        }
-		    } catch (SQLException e ) {
-		        JDBCTutorialUtilities.printSQLException(e);
-		    } finally {
-		        if (stmt != null) { stmt.close(); }
-		    }
-		}
+	public static QueryResults getQueryResults(Query inOb) {
+		//TODO
+		return null;
+	}
 	
 }
