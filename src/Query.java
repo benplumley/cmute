@@ -26,4 +26,10 @@ public class Query extends ClientToServer implements java.io.Serializable {
         return queryString;
     }
 
+	@Override
+	public boolean isQuery() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

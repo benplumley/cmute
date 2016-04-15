@@ -11,4 +11,10 @@ public class RideQuery extends ClientToServer {
 		return null;
 	}
 
+	@Override
+	public boolean isQuery() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

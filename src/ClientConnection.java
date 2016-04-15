@@ -8,10 +8,12 @@ public class ClientConnection {
     private static Socket socket;
     private static ObjectOutputStream out;
     private static ObjectInputStream in;
+    private static Client client;
 
-    public ClientConnection(String hostname, int portNumber) {
+    public ClientConnection(String hostname, int portNumber, Client client) {
         this.hostname = hostname;
         this.portNumber = portNumber;
+        this.client = client;
         connect();
     }
 
@@ -34,8 +36,9 @@ public class ClientConnection {
         try {
             out.writeObject(rideQuery);
             ProtocolObject response = (ProtocolObject) in.readObject();
+            MessageObject responseMessage = (MessageObject) response;
             if (response.isMessage()) { // the server returned an error
-                handleMessage((MessageObject) response);
+                handleMessage(responseMessage);
             } else { // the server returned rides
                 responseRides = ((RideCollectionResults) response).getRides();
             }
@@ -58,17 +61,49 @@ public class ClientConnection {
 	}
 
     public Boolean book(Ride ride) {
-        // TODO send a request to book this ride
+        Object booking = new BookRide(ride.getUUID());
+        try {
+            out.writeObject(booking);
+            ProtocolObject response = (ProtocolObject) in.readObject();
+            MessageObject responseMessage = (MessageObject) response;
+            if (responseMessage.isMessage()) { // the server returned an error
+                if (responseMessage.getMessage() == MessageContent.RIDE_BOOKING_CONFIRMATION) {
+                    return true;
+                } else {
+                    handleMessage(responseMessage);
+                    return false;
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error booking ride:");
+            System.err.println(e.getMessage());
+        }
         return false;
     }
 
     public Boolean list(Ride ride) {
-        // TODO
+        Object listing = new BookRide(ride.getUUID());
+        try {
+            out.writeObject(listing);
+            ProtocolObject response = (ProtocolObject) in.readObject();
+            MessageObject responseMessage = (MessageObject) response;
+            if (responseMessage.isMessage()) { // the server returned an error
+                if (responseMessage.getMessage() == MessageContent.NEW_RIDE_CONFIRMATION) {
+                    return true;
+                } else {
+                    handleMessage(responseMessage);
+                    return false;
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error booking ride:");
+            System.err.println(e.getMessage());
+        }
         return false;
     }
 
     private void handleMessage(MessageObject message) {
-        // TODO
+        client.handleMessage(message);
     }
 
 }

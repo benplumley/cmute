@@ -51,4 +51,8 @@ public class Ride implements java.io.Serializable {
         return description;
     }
 
+	public int getUUID() {
+		return UUID;
+	}
+
 }

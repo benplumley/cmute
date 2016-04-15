@@ -325,4 +325,8 @@ public class Client extends JPanel implements ActionListener, MouseListener,
         }
     }
 
+    public void handleMessage(MessageObject message) {
+        // TODO
+    }
+
 }
