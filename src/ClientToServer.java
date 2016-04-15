@@ -1,10 +1,15 @@
 @SuppressWarnings("serial")
-public abstract class ClientToServer extends ProtocolObject implements SQLable {
+public abstract class ClientToServer extends ProtocolObject {
 
-	public ClientToServer() {
-		super(false);
-	}
+	private final ClientToServerPurpose myPurpose;
 	
-	public abstract boolean isQuery();
+	public ClientToServer(ClientToServerPurpose myPurp) {
+		super(false);
+		this.myPurpose = myPurp;
+	}
+
+	public ClientToServerPurpose getMyPurpose() {
+		return myPurpose;
+	}
 
 }

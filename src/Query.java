@@ -10,6 +10,7 @@ public class Query extends ClientToServer implements java.io.Serializable {
     private int timeTolerance;
 
     public Query(Boolean isToUni, DateTime dateAndTime, int timeTolerance) {
+    	super(ClientToServerPurpose.QUERY);
         this.isToUni = isToUni;
         this.dateAndTime = dateAndTime;
         this.timeTolerance = timeTolerance;
@@ -26,10 +27,5 @@ public class Query extends ClientToServer implements java.io.Serializable {
         return queryString;
     }
 
-	@Override
-	public boolean isQuery() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 }

@@ -1,21 +1,13 @@
 public class BookRide extends ClientToServer {
 
-	private int UUID;
-
-	public BookRide(int UUID) {
-		this.UUID = UUID;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4109739758499069884L;
+	
+	public BookRide() {
+		super(ClientToServerPurpose.RIDE_BOOKING);
 	}
 
-	@Override
-	public String toSQLString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isQuery() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 }

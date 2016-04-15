@@ -1,22 +1,11 @@
 
 public class NewRide extends ClientToServer {
 
-	private Ride ride;
+	private static final long serialVersionUID = -8586202014045591404L;
 
-	public NewRide(Ride ride) {
-		this.ride = ride;
+	public NewRide() {
+		super(ClientToServerPurpose.NEW_RIDE);
 	}
 
-	@Override
-	public String toSQLString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isQuery() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 }

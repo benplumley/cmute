@@ -41,6 +41,9 @@ public class MessageObject extends ProtocolObject {
 			case RIDE_BOOKING_FAILURE:
 				return true;
 				
+			case COMMUNICATION_ERROR:
+				return true;
+				
 			default:
 				return false;
 		
