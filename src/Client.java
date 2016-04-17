@@ -46,7 +46,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 
 	public void run() {
 		setupFrame();
-        // connection = new ClientConnection(hostname, portNumber);
+        // connection = new ClientConnection(hostname, portNumber, this);
 		connection = new FakeServer(); // TODO for debugging
         updateRides();
 	}
@@ -319,6 +319,8 @@ public class Client extends JPanel implements ActionListener, MouseListener,
             successful = connection.list(ride);
             if (successful) {
                 JOptionPane.showMessageDialog(this, "Your ride was listed successfully.");
+                newListing = false;
+                cancelNewListing();
             } else {
                 JOptionPane.showMessageDialog(this, "Your listing failed.");
             }

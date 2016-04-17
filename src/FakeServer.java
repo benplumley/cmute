@@ -26,12 +26,12 @@ public class FakeServer {
 
     public Boolean book(Ride ride) {
         // TODO send a request to book this ride
-        return false;
+        return true;
     }
 
     public Boolean list(Ride ride) {
         // TODO
-        return false;
+        return true;
     }
 
 }
