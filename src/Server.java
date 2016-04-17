@@ -27,6 +27,7 @@ public class Server {
     	//Set up the server via input args
 		try{
 			
+			System.out.println("Initialising server");
         	int portNumber = Integer.parseInt(args[0]);
         	serverSocket = new ServerSocket(portNumber);
         	
@@ -44,7 +45,7 @@ public class Server {
 		}
     }
 
-  //Obtains a connection to the DB
+  //Obtains a connection to the DB TODO REVIEW THIS
     private static void getConnection(String[] args, int portNumber) {
         try {
 	    	String userName   = args[1];
@@ -55,15 +56,14 @@ public class Server {
 	        
 	        connectionProperties.put("user", userName);
 	        connectionProperties.put("password", password);
-	    	
-	        
+
 	        connection = DriverManager.getConnection(
-	                   "jdbc:mysql://localhost:3306/",
+	                   "jdbc:mysql://localhost:3306/", //Port number?
 	                   connectionProperties);
 	       
 
 			System.out.println("Connected to database");
-	        connection.setAutoCommit(false); //TODO Is necessary?
+	        connection.setAutoCommit(false);
 	        
 	    //Error catching occurs below
 		} catch (ArrayIndexOutOfBoundsException eArgs) {
@@ -78,26 +78,21 @@ public class Server {
 		}
 	}
     
-    //This entire method needs to be re-worked
     private static void acceptClients(){
-		// WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
-		//Accept new clients and create threads for them
-		//TODO Rethink this entire thing tbh
+
 		try {
 			while(true){
 				ServerClientThread clientThread;
 				clientThread = new ServerClientThread(serverSocket.accept());
 				clientThread.start();
+				System.out.println("New client accepted");
 			}
 		} catch (IOException e) {
-			// TODO This is not a clever way of dealing with the system tbh
-			//Rethink this try/catch
 			e.printStackTrace();
 		} finally {
 			//Close all resources
 	       	Server.close();
         }
-		// WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
     }
 	
 	private static void close(){
@@ -116,23 +111,6 @@ public class Server {
 		
 		switch(in.getMyPurpose()){
 		
-		case QUERY:
-			//TODO THIS IS GONNA NEED SOME FUCKING WORK
-			
-		case NEW_RIDE:
-
-			try {
-				pstmt = connection.prepareStatement(
-					"UPDATE COFFEES " +
-				    "SET PRICE = ? " +
-				    "WHERE COF_NAME = ?");
-				pstmt.executeUpdate();
-				connection.commit();
-				pstmt.close();
-			} catch (SQLException e) {
-				throw new ServerSideException(MessageContent.NEW_RIDE_FAILURE, "Unable to post ride");
-			}
-		
 		case RIDE_BOOKING:
 			
 			try {
@@ -146,7 +124,23 @@ public class Server {
 			} catch (SQLException e) {
 				throw new ServerSideException(MessageContent.RIDE_BOOKING_FAILURE, "Unable to book ride");
 			}
-	
+			break;
+					
+		case NEW_RIDE:
+
+			try {
+				pstmt = connection.prepareStatement(
+					"INSERT INTO _________ " +
+				    "VAL PRICE = ? " +
+				    "WHERE COF_NAME = ?");
+				pstmt.executeUpdate();
+				connection.commit();
+				pstmt.close();
+			} catch (SQLException e) {
+				throw new ServerSideException(MessageContent.NEW_RIDE_FAILURE, "Unable to post ride");
+			}
+			break;
+			
 		default:
 			throw new ServerSideException(MessageContent.COMMUNICATION_ERROR, "Invalid CTS object recieved");
 		}
@@ -154,37 +148,37 @@ public class Server {
 		
 	}
 	
-	public static void viewTable(Connection con, String dbName) throws SQLException {
-//
-//		    Statement stmt = null;
-//		    String query =
-//		        "select COF_NAME, SUP_ID, PRICE, " +
-//		        "SALES, TOTAL " +
-//		        "from " + dbName + ".COFFEES";
-//
-//		    try {
-//		        stmt = con.createStatement();
-//		        ResultSet rs = stmt.executeQuery(query);
-//		        while (rs.next()) {
-//		            String coffeeName = rs.getString("COF_NAME");
-//		            int supplierID = rs.getInt("SUP_ID");
-//		            float price = rs.getFloat("PRICE");
-//		            int sales = rs.getInt("SALES");
-//		            int total = rs.getInt("TOTAL");
-//		            System.out.println(coffeeName + "\t" + supplierID +
-//		                               "\t" + price + "\t" + sales +
-//		                               "\t" + total);
-//		        }
-//		    } catch (SQLException e ) {
-//		        JDBCTutorialUtilities.printSQLException(e);
-//		    } finally {
-//		        if (stmt != null) { stmt.close(); }
-//		    }
-	}
+	public static QueryResults getQueryResults(Query query) throws ServerSideException {
+	    try {
+	    	
+		    Statement stmt = null;
+		    String queryString =
+			"SELECT * FROM rides WHERE" +
+	        " is_to_uni = " + query.isToUni() +
+	        " AND date_and_time >= " + query.getStartTime() +
+	        " AND date_and_time <= " + query.getEndTime() +
+	        " AND seats_remaining > 0";
+	    	
+	        stmt = connection.createStatement();
+	        ResultSet rs = stmt.executeQuery(queryString);
+	        
+	        while (rs.next()) {
+	            String coffeeName = rs.getString("COF_NAME");
+	            int supplierID = rs.getInt("SUP_ID");
+	            float price = rs.getFloat("PRICE");
+	            int sales = rs.getInt("SALES");
+	            int total = rs.getInt("TOTAL");
+	            System.out.println(coffeeName + "\t" + supplierID +
+	                               "\t" + price + "\t" + sales +
+	                               "\t" + total);
+	        }
+	        
+	        if (stmt != null) { stmt.close(); }
 
-	public static QueryResults getQueryResults(Query inOb) {
-		//TODO
-		return null;
+	        return new QueryResults(rs);
+	    } catch (SQLException e ) {
+	       throw new ServerSideException(MessageContent.QUERY_FAILURE, "Query could not be successfully executed");
+	    }
 	}
 	
 }
