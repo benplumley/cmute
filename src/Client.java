@@ -52,7 +52,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 	}
 
 	private void setupFrame() {
-		JFrame window = new JFrame("Car Sharing");
+		JFrame window = new JFrame("cmute | Bath, UK");
 		window.setIconImage(Toolkit.getDefaultToolkit()
 			.getImage("graphics/icon.png"));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
