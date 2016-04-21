@@ -74,7 +74,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 		mapView.add(map, new Integer(0));
         mapView.addMouseListener(this);
         JPanel topButtons = new JPanel(new GridLayout(1, 2));
-        JButton from = new JButton("FROM UNI");
+        JButton from = new JButton("FROM UNI"); //TODO maybe fix these buttons on OSX
 		from.setBackground(new Color(198, 0, 167));
 		from.setForeground(Color.WHITE);
         from.setFocusPainted(false);
