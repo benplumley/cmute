@@ -1,12 +1,12 @@
 import java.sql.ResultSet;
-
+import java.sql.SQLException;
 
 public class QueryResults extends ServerToClient {
 	private Ride[] myRides;
 
 	private static final long serialVersionUID = -1391915633649891722L;
 
-	public QueryResults(ResultSet rs) {
+	public QueryResults(ResultSet rs) throws SQLException {
 		super();
         while (rs.next()) {
             String coffeeName = rs.getString("COF_NAME");
@@ -23,7 +23,7 @@ public class QueryResults extends ServerToClient {
 	private void addRide(Ride rideToAdd){
 //		myRides.
 	}
-	
+
 	public Ride[] getRides() {
 		return myRides;
 	}
