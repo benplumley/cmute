@@ -328,15 +328,11 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     }
 
     public void handleMessage(MessageObject message) {
-    	//TODO
-		switch(message.getMessage()){
-    		case GENERAL_ERROR:
-                // show error message or whatever
-    			break;
-    		default:
-                // depends on message?
-    			break;
-    	}
+        if (message.isError()) {
+            JOptionPane.showMessageDialog(this, message.getMyDescription());
+        } else {
+            //TODO how to handle non-error messages
+        }
     }
 
 }
