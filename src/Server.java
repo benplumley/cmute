@@ -1,8 +1,8 @@
 /* Integrated project 2015/16
  * University of Bath
- * 
+ *
  * IMPORTANT JDBC RESOURCES
- * 
+ *
  * https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html
  * http://www.cs.nott.ac.uk/~psznza/G51DBS/dbs19.pdf
  */
@@ -12,27 +12,27 @@ import java.util.Properties;
 import java.net.*;
 
 public class Server {
-	
+
     private static ServerSocket serverSocket;
     private static Connection connection;
 
     public static void main(String[] args) {
-    	
+
     	initialise(args);
     	acceptClients();
-    			
+
     }
-    
+
     private static void initialise(String[] args){
     	//Set up the server via input args
 		try{
-			
+
 			System.out.println("Initialising server");
         	int portNumber = Integer.parseInt(args[0]);
         	serverSocket = new ServerSocket(portNumber);
-        	
+
         	getConnection(args, portNumber);
-        
+
         //Error catching for server set up process
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException eArgs) {
         	System.err.println("Error: Incorrect arguments.");
@@ -50,21 +50,21 @@ public class Server {
         try {
 	    	String userName   = args[1];
 	    	String password   = args[2];
-	    	
+
 	        connection = null;
 	        Properties connectionProperties = new Properties();
-	        
+
 	        connectionProperties.put("user", userName);
 	        connectionProperties.put("password", password);
 
 	        connection = DriverManager.getConnection(
 	                   "jdbc:mysql://localhost:3306/", //Port number?
 	                   connectionProperties);
-	       
+
 
 			System.out.println("Connected to database");
 	        connection.setAutoCommit(false);
-	        
+
 	    //Error catching occurs below
 		} catch (ArrayIndexOutOfBoundsException eArgs) {
 			System.err.println("Error: incorrect arguments");
@@ -77,7 +77,7 @@ public class Server {
 			Server.close();
 		}
 	}
-    
+
     private static void acceptClients(){
 
 		try {
@@ -94,7 +94,7 @@ public class Server {
 	       	Server.close();
         }
     }
-	
+
 	private static void close(){
     	try {
 			serverSocket.close();
@@ -108,11 +108,11 @@ public class Server {
 	public static synchronized void processClientToServerObject(ClientToServer in) throws ServerSideException{
 
 		PreparedStatement pstmt;
-		
+
 		switch(in.getMyPurpose()){
-		
-		case RIDE_BOOKING:
-			
+
+		case RIDE_BOOKING: //TODO SQL interaction for ride booking
+
 			try {
 				pstmt = connection.prepareStatement(
 					"UPDATE COFFEES " +
@@ -125,8 +125,8 @@ public class Server {
 				throw new ServerSideException(MessageContent.RIDE_BOOKING_FAILURE, "Unable to book ride");
 			}
 			break;
-					
-		case NEW_RIDE:
+
+		case NEW_RIDE: //TODO SQL interaction for ride listing
 
 			try {
 				pstmt = connection.prepareStatement(
@@ -140,17 +140,17 @@ public class Server {
 				throw new ServerSideException(MessageContent.NEW_RIDE_FAILURE, "Unable to post ride");
 			}
 			break;
-			
+
 		default:
 			throw new ServerSideException(MessageContent.COMMUNICATION_ERROR, "Invalid CTS object recieved");
 		}
-		
-		
+
+
 	}
-	
+
 	public static QueryResults getQueryResults(Query query) throws ServerSideException {
 	    try {
-	    	
+
 		    Statement stmt = null;
 		    String queryString =
 			"SELECT * FROM rides WHERE" +
@@ -158,10 +158,10 @@ public class Server {
 	        " AND date_and_time >= " + query.getStartTime() +
 	        " AND date_and_time <= " + query.getEndTime() +
 	        " AND seats_remaining > 0";
-	    	
+
 	        stmt = connection.createStatement();
 	        ResultSet rs = stmt.executeQuery(queryString);
-	        
+
 	        if (stmt != null) { stmt.close(); }
 
 	        return new QueryResults(rs);
@@ -169,5 +169,5 @@ public class Server {
 	       throw new ServerSideException(MessageContent.QUERY_FAILURE, "Query could not be successfully executed");
 	    }
 	}
-	
+
 }

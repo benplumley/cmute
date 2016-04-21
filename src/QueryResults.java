@@ -21,6 +21,7 @@ public class QueryResults extends ServerToClient {
 	}
 
 	private void addRide(Ride rideToAdd){
+        //TODO QueryResults.addRide()
 //		myRides.
 	}
 
