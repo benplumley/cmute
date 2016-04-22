@@ -8,3 +8,17 @@ Decided to use MySQL so the server can be run on LCPU.
 TODO
 
 Work out how repetition will work. If we just store a list of repeating days in the database, how do we store number of seats left because it will be different for each repetition (ie this Monday's ride has 3 seats left, but the same ride next monday has 5). Can't use multiple rows because each ride repeats an infinite number of times. Could use a worker in the server to check eg every hour and create a row for every repetition in the next month?
+
+# User Documentation
+
+### Booking a ride
+
+Open the program and choose whether you are going to or from uni with the buttons at the top. Choose a date and time either by typing into the date-time picker, or using the up and down arrows to increase or decrease the selected field. Use the slider to set how many minutes either side you are willing to wait for the ride. Increasing this range will increase the number of available rides.
+
+The pins now shown on the map represent the end points of all the rides that meet the criteria you've set. Choose one in a location that suits you, and click its pin. You will be presented with a confirmation box containing the full details of the ride you've chosen. If it all looks good, click 'Book this ride!' to finalise your booking.
+
+### Listing a ride
+
+Open the program and click on the 'New Listing' button. Choose whether you are going to or from uni with the buttons at the top. Choose a date and time either by typing into the date-time picker, or using the up and down arrows to increase or decrease the selected field. Use the 'Set Repetitions' button to choose which days this ride will repeat on, at the specified time. Use the dropdown box to choose how spare seats your car has - only this many passengers will be able to book a ride in your car before it will no longer appear on the map.
+
+Finally, click the exact spot on the map that you plan to leave from. You will be presented with a confirmation box containing the full details of the ride you've created. If it all looks good, click 'Create this listing!' to finalise your listing.
