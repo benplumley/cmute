@@ -189,9 +189,24 @@ public class Server {
 	    }
 	}
 
-    private static int getSeatsRemaining(int id) {
-        //TODO write a method to get the number of seats remaining in the ride with the given id. This can't be passed straight from client because they might have downloaded their data half an hour ago, and the seats remaining could have changed since.
-        return 1;
+    private static int getSeatsRemaining(int id) throws ServerSideException {
+        //TODO test this SQL
+        try {
+
+		    Statement stmt = null;
+		    String queryString =
+			"SELECT seats_remaining FROM rides WHERE" +
+	        " UUID = " + id;
+
+	        stmt = connection.createStatement();
+	        ResultSet rs = stmt.executeQuery(queryString);
+
+	        if (stmt != null) { stmt.close(); }
+
+	        return rs.getInt("seats_remaining");
+	    } catch (SQLException e) {
+            throw new ServerSideException(MessageContent.QUERY_FAILURE, "Query could not be successfully executed");
+	    }
     }
 
 }
