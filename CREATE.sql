@@ -20,7 +20,7 @@ USE `ridesharing` ;
 -- -----------------------------------------------------
 -- Table `ridesharing`.`rides`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ridesharing`.`rides` (
+CREATE TABLE IF NOT EXISTS `rides_bjp36` (
   `UUID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `map_point_x` INT UNSIGNED NOT NULL,
   `map_point_y` INT UNSIGNED NOT NULL,

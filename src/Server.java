@@ -58,7 +58,7 @@ public class Server {
 	        connectionProperties.put("password", password);
 
 	        connection = DriverManager.getConnection(
-	                   "jdbc:mysql://localhost:3306/", //Port number?
+	                   "jdbc:mysql://mysql5host.bath.ac.uk/cm20215db15_068", //Port number?
 	                   connectionProperties);
 
 
@@ -116,7 +116,7 @@ public class Server {
             int currentSeatsRemaining = getSeatsRemaining(bookingUUID);
             if (currentSeatsRemaining > 0) {
                 String bookingString =
-                "UPDATE rides" +
+                "UPDATE rides_bjp36" +
                 "SET seats_remaining=(" + (currentSeatsRemaining - 1) + ")" +
                 "WHERE UUID=" + bookingUUID;
     			try {
@@ -135,7 +135,7 @@ public class Server {
 		case NEW_RIDE: //TODO test this SQL. Are the values in the right format, eg how does JDBC expect a Boolean?
             Ride listing = ((NewRide) in).getRide();
             String listingString =
-            "INSERT INTO rides" +
+            "INSERT INTO rides_bjp36" +
                 "(map_point_x," +
                 "map_point_y," +
                 "date_and_time," +
@@ -172,7 +172,7 @@ public class Server {
 
 		    Statement stmt = null;
 		    String queryString =
-			"SELECT * FROM rides WHERE" +
+			"SELECT * FROM rides_bjp36 WHERE" +
 	        " is_to_uni = " + query.isToUni() +
 	        " AND date_and_time >= " + query.getStartTime() +
 	        " AND date_and_time <= " + query.getEndTime() +
@@ -195,7 +195,7 @@ public class Server {
 
 		    Statement stmt = null;
 		    String queryString =
-			"SELECT seats_remaining FROM rides WHERE" +
+			"SELECT seats_remaining FROM rides_bjp36 WHERE" +
 	        " UUID = " + id;
 
 	        stmt = connection.createStatement();
