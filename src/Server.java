@@ -75,19 +75,16 @@ public class Server {
 			System.err.println("Error establishing DB connection");
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
-		} finally {
-			Server.close();
 		}
 	}
 
     private static void acceptClients(){
-
+        System.out.println("Accepting clients");
 		try {
 			while(true){
 				ServerClientThread clientThread;
 				clientThread = new ServerClientThread(serverSocket.accept());
 				clientThread.start();
-				System.out.println("New client accepted");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

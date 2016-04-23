@@ -17,8 +17,8 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 	private static String hostname = "localhost";
 	private static int portNumber = 55511;
 	private Map map = new Map();
-    // private ClientConnection connection;
-    private FakeServer connection; // TODO change to real server connection before final system
+    private ClientConnection connection;
+    // private FakeServer connection; // TODO change to real server connection before final system
     private Boolean isToUni = false;
     private Boolean newListing = false;
     private DateTime dateAndTime = new DateTime((new Date()).getTime());
@@ -52,8 +52,8 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 
 	public void run() {
 		setupFrame();
-        // connection = new ClientConnection(hostname, portNumber, this);
-		connection = new FakeServer(); // TODO change to real server connection before final system
+        connection = new ClientConnection(hostname, portNumber, this);
+		// connection = new FakeServer(); // TODO change to real server connection before final system
         updateRides();
 	}
 
