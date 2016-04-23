@@ -36,6 +36,12 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     private JLabel toleranceLabel;
 
 	public static void main(String[] args) {
+        if (args.length > 0) {
+            hostname = args[0];
+            if (args.length > 1) {
+                portNumber = Integer.parseInt(args[1]);
+            }
+        }
 		Client client = new Client();
 	}
 
