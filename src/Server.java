@@ -48,6 +48,8 @@ public class Server {
   //Obtains a connection to the DB TODO REVIEW THIS
     private static void getConnection(String[] args, int portNumber) {
         try {
+            Class.forName("com.mysql.jdbc.Driver");
+
 	    	String userName   = args[1];
 	    	String password   = args[2];
 
