@@ -11,4 +11,8 @@ public class BookRide extends ClientToServer {
 		this.UUID = UUID;
 	}
 
+	public int getUUID() {
+		return UUID;
+	}
+
 }

@@ -112,7 +112,12 @@ public class Server {
 		switch(in.getMyPurpose()){
 
 		case RIDE_BOOKING: //TODO SQL interaction for ride booking
-
+            int bookingUUID = ((BookRide) in).getUUID();
+            int currentSeatsRemaining = getSeatsRemaining(bookingUUID);
+            String bookingString =
+            "UPDATE rides" +
+            "SET seats_remaining=(" + (currentSeatsRemaining - 1) + ")" +
+            "WHERE UUID=" + bookingUUID;
 			try {
 				pstmt = connection.prepareStatement(
 					"UPDATE COFFEES " +
@@ -127,24 +132,23 @@ public class Server {
 			break;
 
 		case NEW_RIDE: //TODO SQL interaction for ride listing. Are the values in the right format, eg how does JDBC expect a Boolean?
-            listing = ((NewRide) in).getRide();
-            String updateString =
-            "INSERT INTO rides
-                (map_point_x,
-                map_point_y,
-                date_and_time,
-                region,
-                seats_remaining,
-                is_to_uni,
-                repeating_days)
-            VALUES
-                (" + listing.getLocation().getX() + ",
-                " + listing.getLocation().getY() + ",
-                " + listing.getDateTime().getDateTime() + ",
-                1,
-                " + listing.getSeatsRemaining() + ",
-                " + listing.getIsToUni() + ",
-                " + listing.getRepeatingDays() + ")";
+            Ride listing = ((NewRide) in).getRide();
+            String listingString =
+            "INSERT INTO rides" +
+                "(map_point_x," +
+                "map_point_y," +
+                "date_and_time," +
+                "region," +
+                "seats_remaining," +
+                "is_to_uni," +
+                "repeating_days)" +
+            "VALUES" +
+                "(" + listing.getLocation().getX() + "," +
+                listing.getLocation().getY() + "," +
+                listing.getDateTime().getDateTime() + ",1," +
+                listing.getSeatsRemaining() + "," +
+                listing.getIsToUni() + "," +
+                listing.getRepeatingDays() + ")";
 			try {
 				pstmt = connection.prepareStatement(
 					"INSERT INTO _________ " +
@@ -186,5 +190,10 @@ public class Server {
 	       throw new ServerSideException(MessageContent.QUERY_FAILURE, "Query could not be successfully executed");
 	    }
 	}
+
+    private static int getSeatsRemaining(int id) {
+        //TODO write a method to get the number of seats remaining in the ride with the given id. This can't be passed straight from client because they might have downloaded their data half an hour ago, and the seats remaining could have changed since.
+        return 1;
+    }
 
 }
