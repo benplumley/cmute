@@ -9,4 +9,8 @@ public class NewRide extends ClientToServer {
 		this.ride = ride;
 	}
 
+	public Ride getRide() {
+		return ride;
+	}
+
 }

@@ -126,8 +126,25 @@ public class Server {
 			}
 			break;
 
-		case NEW_RIDE: //TODO SQL interaction for ride listing
-
+		case NEW_RIDE: //TODO SQL interaction for ride listing. Are the values in the right format, eg how does JDBC expect a Boolean?
+            listing = ((NewRide) in).getRide();
+            String updateString =
+            "INSERT INTO rides
+                (map_point_x,
+                map_point_y,
+                date_and_time,
+                region,
+                seats_remaining,
+                is_to_uni,
+                repeating_days)
+            VALUES
+                (" + listing.getLocation().getX() + ",
+                " + listing.getLocation().getY() + ",
+                " + listing.getDateTime().getDateTime() + ",
+                1,
+                " + listing.getSeatsRemaining() + ",
+                " + listing.getIsToUni() + ",
+                " + listing.getRepeatingDays() + ")";
 			try {
 				pstmt = connection.prepareStatement(
 					"INSERT INTO _________ " +

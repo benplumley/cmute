@@ -40,6 +40,18 @@ public class Ride implements java.io.Serializable {
         return isToUni;
     }
 
+	public DateTime getDateTime() {
+		return dateAndTime;
+	}
+
+	public int getSeatsRemaining() {
+		return seatsRemaining;
+	}
+
+	public int getRepeatingDays() {
+		return repeatingDays;
+	}
+
     public String getReadableDescription() {
         String description;
         if (isToUni) {
