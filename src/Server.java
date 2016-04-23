@@ -111,27 +111,28 @@ public class Server {
 
 		switch(in.getMyPurpose()){
 
-		case RIDE_BOOKING: //TODO SQL interaction for ride booking
+		case RIDE_BOOKING: //TODO test this SQL
             int bookingUUID = ((BookRide) in).getUUID();
             int currentSeatsRemaining = getSeatsRemaining(bookingUUID);
-            String bookingString =
-            "UPDATE rides" +
-            "SET seats_remaining=(" + (currentSeatsRemaining - 1) + ")" +
-            "WHERE UUID=" + bookingUUID;
-			try {
-				pstmt = connection.prepareStatement(
-					"UPDATE COFFEES " +
-				    "SET PRICE = ? " +
-				    "WHERE COF_NAME = ?");
-				pstmt.executeUpdate();
-				connection.commit();
-				pstmt.close();
-			} catch (SQLException e) {
-				throw new ServerSideException(MessageContent.RIDE_BOOKING_FAILURE, "Unable to book ride");
-			}
+            if (currentSeatsRemaining > 0) {
+                String bookingString =
+                "UPDATE rides" +
+                "SET seats_remaining=(" + (currentSeatsRemaining - 1) + ")" +
+                "WHERE UUID=" + bookingUUID;
+    			try {
+    				pstmt = connection.prepareStatement(bookingString);
+    				pstmt.executeUpdate();
+    				connection.commit();
+    				pstmt.close();
+    			} catch (SQLException e) {
+    				throw new ServerSideException(MessageContent.RIDE_BOOKING_FAILURE, "Unable to book ride");
+    			}
+            } else {
+                throw new ServerSideException(MessageContent.RIDE_BOOKING_FAILURE, "No seats remaining");
+            }
 			break;
 
-		case NEW_RIDE: //TODO SQL interaction for ride listing. Are the values in the right format, eg how does JDBC expect a Boolean?
+		case NEW_RIDE: //TODO test this SQL. Are the values in the right format, eg how does JDBC expect a Boolean?
             Ride listing = ((NewRide) in).getRide();
             String listingString =
             "INSERT INTO rides" +
@@ -150,10 +151,7 @@ public class Server {
                 listing.getIsToUni() + "," +
                 listing.getRepeatingDays() + ")";
 			try {
-				pstmt = connection.prepareStatement(
-					"INSERT INTO _________ " +
-				    "VAL PRICE = ? " +
-				    "WHERE COF_NAME = ?");
+				pstmt = connection.prepareStatement(listingString);
 				pstmt.executeUpdate();
 				connection.commit();
 				pstmt.close();
