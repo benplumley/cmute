@@ -1,31 +1,35 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class QueryResults extends ServerToClient {
-	private Ride[] myRides;
+	private ArrayList<Ride> myRides = new ArrayList<Ride>();
 
 	private static final long serialVersionUID = -1391915633649891722L;
 
 	public QueryResults(ResultSet rs) throws SQLException {
 		super();
         while (rs.next()) {
-            String coffeeName = rs.getString("COF_NAME");
-            int supplierID = rs.getInt("SUP_ID");
-            float price = rs.getFloat("PRICE");
-            int sales = rs.getInt("SALES");
-            int total = rs.getInt("TOTAL");
-            System.out.println(coffeeName + "\t" + supplierID +
-                               "\t" + price + "\t" + sales +
-                               "\t" + total);
+        	
+        	//TODO Review the shit out of this tbh
+        	myRides.add(
+        			new Ride(
+        					rs.getInt("UUID"),
+        					rs.getBoolean("istouni"),
+        					new MapPoint(
+        							rs.getInt("map_point_x"),
+        							rs.getInt("map_point_y")),
+        					new DateTime(
+        							rs.getLong("date_and_time")),
+        					rs.getInt("repeating_days"),
+        					rs.getInt("number_of_seats"),
+        					rs.getInt("seats_remaining")
+        					)
+        			);
         }
 	}
 
-	private void addRide(Ride rideToAdd){
-        //TODO QueryResults.addRide() - this method isn't used (yet)
-//		myRides.
-	}
-
-	public Ride[] getRides() {
+	public ArrayList<Ride> getRides() {
 		return myRides;
 	}
 

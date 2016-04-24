@@ -40,7 +40,7 @@ public class ClientConnection {
             if (response.isMessage()) { // the server returned an error
                 handleMessage(responseMessage);
             } else { // the server returned rides
-                responseRides = ((QueryResults) response).getRides();
+                responseRides = (Ride[]) ((QueryResults) response).getRides().toArray();
             }
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Error requesting matching rides:");
