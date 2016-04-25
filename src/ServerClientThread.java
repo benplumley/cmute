@@ -28,16 +28,12 @@ public class ServerClientThread implements Runnable {
 
 	public void start() {
 		System.out.println("New client connected");
-	}
-
-	public void run() {
-
-		try {
+        try {
 
 			ProtocolObject input = null;
 
 			while((input = (ProtocolObject) in.readObject()) != null){
-				
+
 				System.out.println("Received object from client");
 
 				if(input.isMessage()){
@@ -61,6 +57,11 @@ public class ServerClientThread implements Runnable {
 		} finally {
 			this.close();
 		}
+	}
+
+	public void run() {
+        System.out.println("Thread running");
+
 
 	}
 

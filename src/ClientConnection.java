@@ -82,24 +82,26 @@ public class ClientConnection {
     }
 
     public Boolean list(Ride ride) {
-        Object listing = new NewRide(ride);
+        NewRide listing = new NewRide(ride);
         try {
             out.writeObject(listing);
+            out.flush();
             // ProtocolObject response = (ProtocolObject) in.readObject();
             ProtocolObject response;
+            MessageObject responseMessage = null;
             while((response = (ProtocolObject) in.readObject()) != null){
-                MessageObject responseMessage = (MessageObject) response;
-                if (responseMessage.isMessage()) { // the server returned an error
-                    if (responseMessage.getMessage() == MessageContent.NEW_RIDE_CONFIRMATION) {
-                        return true;
-                    } else {
-                        handleMessage(responseMessage);
-                        return false;
-                    }
+                responseMessage = (MessageObject) response;
+            }
+            if (responseMessage.isMessage()) { // the server returned an error
+                if (responseMessage.getMessage() == MessageContent.NEW_RIDE_CONFIRMATION) {
+                    return true;
+                } else {
+                    handleMessage(responseMessage);
+                    return false;
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Error booking ride:");
+            System.err.println("Error listing ride:");
             System.err.println(e.getMessage());
         }
         return false;

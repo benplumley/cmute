@@ -1,5 +1,5 @@
 
-public class NewRide extends ClientToServer {
+public class NewRide extends ClientToServer implements java.io.Serializable {
 
 	private static final long serialVersionUID = -8586202014045591404L;
 	private Ride ride;

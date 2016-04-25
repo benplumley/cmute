@@ -1,4 +1,4 @@
-public class BookRide extends ClientToServer {
+public class BookRide extends ClientToServer implements java.io.Serializable {
 
 	/**
 	 *
