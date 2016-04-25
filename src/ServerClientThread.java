@@ -37,6 +37,8 @@ public class ServerClientThread implements Runnable {
 			ProtocolObject input = null;
 
 			while((input = (ProtocolObject) in.readObject()) != null){
+				
+				System.out.println("Received object from client");
 
 				if(input.isMessage()){
 
