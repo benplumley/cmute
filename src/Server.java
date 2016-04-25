@@ -187,7 +187,13 @@ public class Server {
 	        " AND seats_remaining > 0";
 
 	        stmt = connection.createStatement();
+	        
 	        ResultSet rs = stmt.executeQuery(queryString);
+	        
+	        if(!rs.isBeforeFirst()){
+	        	//Empty result set
+	        	throw new ServerSideException(MessageContent.QUERY_FAILURE, "No results");
+	        }
 
 	        if (stmt != null) { stmt.close(); }
 
