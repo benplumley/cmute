@@ -189,7 +189,9 @@ public class Server {
 
 	        stmt = connection.createStatement();
 	        
+	        
 	        ResultSet rs = stmt.executeQuery(queryString);
+	        System.out.println("Results retrieved for client!");
 	        
 	        if(!rs.isBeforeFirst()){
 	        	//Empty result set
