@@ -176,9 +176,10 @@ public class Server {
 	}
 
 	public static QueryResults getQueryResults(Query query) throws ServerSideException {
-	    try {
+		Statement stmt = null;
+		
+		try {
 
-		    Statement stmt = null;
 		    String queryString =
 			"SELECT * FROM rides_bjp36 WHERE" +
 	        " is_to_uni = " + query.isToUni() +
@@ -195,11 +196,15 @@ public class Server {
 	        	throw new ServerSideException(MessageContent.QUERY_FAILURE, "No rides at this time");
 	        }
 
-	        if (stmt != null) { stmt.close(); }
-
 	        return new QueryResults(rs);
 	    } catch (SQLException e ) {
 	       throw new ServerSideException(MessageContent.QUERY_FAILURE, "Query could not be successfully executed");
+	    } finally {
+	        if (stmt != null) { try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} }
 	    }
 	}
 
