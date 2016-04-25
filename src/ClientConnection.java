@@ -91,8 +91,10 @@ public class ClientConnection {
             MessageObject responseMessage = null;
             while((response = (ProtocolObject) in.readObject()) != null){
                 responseMessage = (MessageObject) response;
+                break;
             }
             if (responseMessage.isMessage()) { // the server returned an error
+                System.out.println(responseMessage.getMyDescription());
                 if (responseMessage.getMessage() == MessageContent.NEW_RIDE_CONFIRMATION) {
                     return true;
                 } else {

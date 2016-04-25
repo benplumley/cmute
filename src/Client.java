@@ -218,13 +218,16 @@ public class Client extends JPanel implements ActionListener, MouseListener,
             mapView.remove(mapView.getIndexOf(oldPin)); // remove all old pins from the panel
         }
         mapView.repaint();
-        for (Ride thisRide : currentRides) {
-            MapPoint rideLocation = thisRide.getLocation();
-            Pin pin = new Pin(thisRide);
-            pin.addMouseListener(this);
-            mapView.add(pin, new Integer(1));
-            pin.setBounds(rideLocation.getX() - Pin.OFFSETX, rideLocation.getY() - Pin.OFFSETY, Pin.WIDTH, Pin.HEIGHT);
+        if (currentRides != null) {
+            for (Ride thisRide : currentRides) {
+                MapPoint rideLocation = thisRide.getLocation();
+                Pin pin = new Pin(thisRide);
+                pin.addMouseListener(this);
+                mapView.add(pin, new Integer(1));
+                pin.setBounds(rideLocation.getX() - Pin.OFFSETX, rideLocation.getY() - Pin.OFFSETY, Pin.WIDTH, Pin.HEIGHT);
+            }
         }
+
     }
 
     private void book(Ride ride) {
