@@ -111,8 +111,12 @@ public class Server {
 		switch(in.getMyPurpose()){
 
 		case RIDE_BOOKING: //TODO test this SQL
+			
+			System.out.println("Booking ride");
+			
             int bookingUUID = ((BookRide) in).getUUID();
             int currentSeatsRemaining = getSeatsRemaining(bookingUUID);
+            
             if (currentSeatsRemaining > 0) {
                 String bookingString =
                 "UPDATE rides_bjp36" +
@@ -134,7 +138,7 @@ public class Server {
 		case NEW_RIDE: //TODO test this SQL. Are the values in the right format, eg how does JDBC expect a Boolean?
             Ride listing = ((NewRide) in).getRide();
             
-            System.out.println(listing.getReadableDescription());
+            System.out.println("Posting ride:" + listing.getReadableDescription());
             
             String listingString =
             "INSERT INTO rides_bjp36" +
@@ -152,6 +156,7 @@ public class Server {
                 listing.getSeatsRemaining() + "," +
                 listing.getIsToUni() + "," +
                 listing.getRepeatingDays() + ")";
+            
 			try {
 				pstmt = connection.prepareStatement(listingString);
 				pstmt.executeUpdate();

@@ -81,6 +81,7 @@ public class ServerClientThread implements Runnable {
 		switch(inMessage.getMessage()){
 
 		case CLIENT_QUIT:
+			System.out.println("Client quiting");
 			this.close();
 
 		default:
@@ -132,10 +133,10 @@ public class ServerClientThread implements Runnable {
 	}
 
 
-	private void sendMessageToClient(MessageContent errorContent, String errorDescription) {
+	private void sendMessageToClient(MessageContent messageContent, String messageDescription) {
 		sendOutput(new MessageObject(
-				errorContent,
-				errorDescription));
+				messageContent,
+				messageDescription));
 	}
 
 	private void sendOutput(ProtocolObject objectToSend) {
