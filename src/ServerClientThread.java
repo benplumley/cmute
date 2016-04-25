@@ -143,13 +143,14 @@ public class ServerClientThread implements Runnable {
 
 
 	private void sendMessageToClient(MessageContent messageContent, String messageDescription) {
+		System.out.println("Sending message to client: " + messageDescription);		
 		sendOutput(new MessageObject(
 				messageContent,
 				messageDescription));
 	}
 
 	private void sendOutput(ProtocolObject objectToSend) {
-		System.out.println("Sending message to client");
+		System.out.println("Sending object to client");		
 		try {
 			out.writeObject(objectToSend);
 			out.flush();
