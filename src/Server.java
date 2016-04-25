@@ -133,6 +133,9 @@ public class Server {
 
 		case NEW_RIDE: //TODO test this SQL. Are the values in the right format, eg how does JDBC expect a Boolean?
             Ride listing = ((NewRide) in).getRide();
+            
+            System.out.println(listing.getReadableDescription());
+            
             String listingString =
             "INSERT INTO rides_bjp36" +
                 "(map_point_x," +
@@ -155,6 +158,7 @@ public class Server {
 				connection.commit();
 				pstmt.close();
 			} catch (SQLException e) {
+				System.out.println("Unable to post new ride");
 				throw new ServerSideException(MessageContent.NEW_RIDE_FAILURE, "Unable to post ride");
 			}
 			break;
