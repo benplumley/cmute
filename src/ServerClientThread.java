@@ -18,8 +18,11 @@ public class ServerClientThread implements Runnable {
 	public ServerClientThread(Socket accept) {
 		myServerSocket = accept;
         try {
+        	
         	in = new ObjectInputStream(myServerSocket.getInputStream());
 			out = new ObjectOutputStream(myServerSocket.getOutputStream());
+			
+			
 		} catch (IOException e) {
             System.err.println(e.getMessage());
             this.close();
@@ -33,16 +36,23 @@ public class ServerClientThread implements Runnable {
 			ProtocolObject input = null;
 
 			while((input = (ProtocolObject) in.readObject()) != null){
+<<<<<<< HEAD
 
 				System.out.println("Received object from client");
+=======
+				
+>>>>>>> origin/master
 
 				if(input.isMessage()){
-
+					System.out.println("Received message from client");
+					
 					//A message has been recieved
 					//Probably (hopefully) just notification that client is quitting
 					this.handleMessage((MessageObject) input);
 
 				} else {
+					System.out.println("Received CTS object from client");
+					
 					//A request of some form has been made handle it
 					this.handleCTSObject((ClientToServer) input);
 				}
