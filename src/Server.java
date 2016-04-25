@@ -192,7 +192,7 @@ public class Server {
 	        
 	        if(!rs.isBeforeFirst()){
 	        	//Empty result set
-	        	throw new ServerSideException(MessageContent.QUERY_FAILURE, "No results");
+	        	throw new ServerSideException(MessageContent.QUERY_FAILURE, "No rides at this time");
 	        }
 
 	        if (stmt != null) { stmt.close(); }
