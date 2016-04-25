@@ -10,8 +10,7 @@ public class QueryResults extends ServerToClient {
 	public QueryResults(ResultSet rs) throws SQLException {
 		super();
         while (rs.next()) {
-        	
-        	//TODO Review the shit out of this tbh
+        	        	
         	myRides.add(
         			new Ride(
         					rs.getInt("UUID"),

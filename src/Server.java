@@ -199,7 +199,9 @@ public class Server {
 	        }
 
 	        return new QueryResults(rs);
+	        
 	    } catch (SQLException e ) {
+	    	System.out.println(e.getMessage());
 	       throw new ServerSideException(MessageContent.QUERY_FAILURE, "Query could not be successfully executed");
 	    } finally {
 	        if (stmt != null) { try {
