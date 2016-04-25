@@ -82,17 +82,20 @@ public class ClientConnection {
     }
 
     public Boolean list(Ride ride) {
-        Object listing = new BookRide(ride.getUUID());
+        Object listing = new NewRide(ride);
         try {
             out.writeObject(listing);
-            ProtocolObject response = (ProtocolObject) in.readObject();
-            MessageObject responseMessage = (MessageObject) response;
-            if (responseMessage.isMessage()) { // the server returned an error
-                if (responseMessage.getMessage() == MessageContent.NEW_RIDE_CONFIRMATION) {
-                    return true;
-                } else {
-                    handleMessage(responseMessage);
-                    return false;
+            // ProtocolObject response = (ProtocolObject) in.readObject();
+            ProtocolObject response;
+            while((response = (ProtocolObject) in.readObject()) != null){
+                MessageObject responseMessage = (MessageObject) response;
+                if (responseMessage.isMessage()) { // the server returned an error
+                    if (responseMessage.getMessage() == MessageContent.NEW_RIDE_CONFIRMATION) {
+                        return true;
+                    } else {
+                        handleMessage(responseMessage);
+                        return false;
+                    }
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
