@@ -111,12 +111,12 @@ public class Server {
 		switch(in.getMyPurpose()){
 
 		case RIDE_BOOKING: //TODO test this SQL
-			
+
 			System.out.println("Booking ride");
-			
+
             int bookingUUID = ((BookRide) in).getUUID();
             int currentSeatsRemaining = getSeatsRemaining(bookingUUID);
-            
+
             if (currentSeatsRemaining > 0) {
                 String bookingString =
                 "UPDATE rides_bjp36" +
@@ -137,9 +137,9 @@ public class Server {
 
 		case NEW_RIDE: //TODO test this SQL. Are the values in the right format, eg how does JDBC expect a Boolean?
             Ride listing = ((NewRide) in).getRide();
-            
+
             System.out.println("Posting ride:" + listing.getReadableDescription());
-            
+
             String listingString =
             "INSERT INTO rides_bjp36" +
                 "(map_point_x," +
@@ -156,7 +156,7 @@ public class Server {
                 listing.getSeatsRemaining() + "," +
                 listing.getIsToUni() + "," +
                 listing.getRepeatingDays() + ")";
-            
+
 			try {
 				pstmt = connection.prepareStatement(listingString);
 				pstmt.executeUpdate();
@@ -177,7 +177,7 @@ public class Server {
 
 	public static QueryResults getQueryResults(Query query) throws ServerSideException {
 		Statement stmt = null;
-		
+
 		try {
 
 		    String queryString =
@@ -188,18 +188,18 @@ public class Server {
 	        " AND seats_remaining > 0";
 
 	        stmt = connection.createStatement();
-	        
-	        
+
+
 	        ResultSet rs = stmt.executeQuery(queryString);
 	        System.out.println("Results retrieved for client!");
-	        
+
 	        if(!rs.isBeforeFirst()){
 	        	//Empty result set
 	        	throw new ServerSideException(MessageContent.QUERY_FAILURE, "No rides at this time");
 	        }
 
 	        return new QueryResults(rs);
-	        
+
 	    } catch (SQLException e ) {
 	    	System.out.println(e.getMessage());
 	       throw new ServerSideException(MessageContent.QUERY_FAILURE, "Query could not be successfully executed");
@@ -228,6 +228,7 @@ public class Server {
 
 	        return rs.getInt("seats_remaining");
 	    } catch (SQLException e) {
+            System.out.println(e.getMessage());
             throw new ServerSideException(MessageContent.QUERY_FAILURE, "Query could not be successfully executed");
 	    }
     }

@@ -36,11 +36,11 @@ public class ClientConnection {
         try {
             out.writeObject(rideQuery);
             ProtocolObject response = (ProtocolObject) in.readObject();
-            MessageObject responseMessage = (MessageObject) response;
-            if (response.isMessage()) { // the server returned an error
+            if (response.isMessage()) {
+                MessageObject responseMessage = (MessageObject) response;
                 handleMessage(responseMessage);
             } else { // the server returned rides
-                responseRides = (Ride[]) ((QueryResults) response).getRides().toArray();
+                responseRides = ((QueryResults) response).getRideArray();
             }
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Error requesting matching rides:");
