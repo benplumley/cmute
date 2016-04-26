@@ -248,6 +248,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
             } else {
                 JOptionPane.showMessageDialog(this, "Your booking failed.");
             }
+            updateRides();
         }
     }
 
@@ -333,6 +334,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
             } else {
                 JOptionPane.showMessageDialog(this, "Your listing failed.");
             }
+            updateRides();
         }
     }
 

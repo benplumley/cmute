@@ -120,14 +120,17 @@ public class Server {
             if (currentSeatsRemaining > 0) {
                 String bookingString =
                 "UPDATE rides_bjp36" +
-                "SET seats_remaining=(" + (currentSeatsRemaining - 1) + ")" +
-                "WHERE UUID=" + bookingUUID;
+                " SET seats_remaining=" + (currentSeatsRemaining - 1) +
+                " WHERE UUID=" + bookingUUID;
+
+                System.out.println(bookingString);
     			try {
     				pstmt = connection.prepareStatement(bookingString);
     				pstmt.executeUpdate();
     				connection.commit();
     				pstmt.close();
     			} catch (SQLException e) {
+                    e.printStackTrace();
     				throw new ServerSideException(MessageContent.RIDE_BOOKING_FAILURE, "Unable to book ride");
     			}
             } else {
@@ -202,6 +205,7 @@ public class Server {
 
 	    } catch (SQLException e ) {
 	    	System.out.println(e.getMessage());
+            e.printStackTrace();
 	       throw new ServerSideException(MessageContent.QUERY_FAILURE, "Query could not be successfully executed");
 	    } finally {
 	        if (stmt != null) { try {
@@ -219,16 +223,19 @@ public class Server {
 		    Statement stmt = null;
 		    String queryString =
 			"SELECT seats_remaining FROM rides_bjp36 WHERE" +
-	        " UUID = " + id;
+	        " UUID = " + id + ";";
+
+
 
 	        stmt = connection.createStatement();
 	        ResultSet rs = stmt.executeQuery(queryString);
 
-	        if (stmt != null) { stmt.close(); }
-
+	        // if (stmt != null) { stmt.close(); }
+            rs.next();
 	        return rs.getInt("seats_remaining");
 	    } catch (SQLException e) {
             System.out.println(e.getMessage());
+            e.printStackTrace();
             throw new ServerSideException(MessageContent.QUERY_FAILURE, "Query could not be successfully executed");
 	    }
     }
