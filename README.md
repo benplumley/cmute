@@ -39,3 +39,11 @@ If the client is provided no arguments, it will default to port 55511 using loca
 *or*
 
 `java Client <hostname> <portnumber>`
+
+### Compiling
+
+The cmute client and server require no special compiler parameters. They can be compiled from source by running
+
+`javac *.java`
+
+inside the `src` folder.
