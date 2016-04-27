@@ -1,3 +1,8 @@
+/*
+ * This class represents the days of the week a ride will repeat on, and gives
+ * a convenient way to store these in the database by converting to integer.
+ */
+
 public class Repetitions {
 
 	Boolean[] days = {false, false, false, false, false, false, false};
@@ -5,6 +10,7 @@ public class Repetitions {
 	public Repetitions() {}
 
 	public Repetitions(int n) {
+		// stores the int as a bit array
 		for (int i = 6; i >= 0; i--) {
 	        days[6 - i] = (n & (1 << i)) != 0;
 	    }
@@ -25,6 +31,7 @@ public class Repetitions {
 	}
 
 	public int toInteger() {
+		// converts the bit array back to an int
 		int n = 0;
 		for (Boolean day : days) {
     		n = (n << 1) + (day ? 1 : 0);

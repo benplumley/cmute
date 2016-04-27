@@ -45,7 +45,7 @@ public class Server {
 		}
     }
 
-  //Obtains a connection to the DB TODO REVIEW THIS
+  //Obtains a connection to the DB
     private static void getConnection(String[] args, int portNumber) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -60,7 +60,7 @@ public class Server {
 	        connectionProperties.put("password", password);
 
 	        connection = DriverManager.getConnection(
-	                   "jdbc:mysql://mysql5host.bath.ac.uk/cm20215db15_068", //Port number?
+	                   "jdbc:mysql://mysql5host.bath.ac.uk/cm20215db15_068",
 	                   connectionProperties);
 
 
@@ -209,20 +209,13 @@ public class Server {
 	}
 
     private static int getSeatsRemaining(int id) throws ServerSideException {
-        //TODO test this SQL
         try {
-
 		    Statement stmt = null;
 		    String queryString =
 			"SELECT seats_remaining FROM rides_bjp36 WHERE" +
 	        " UUID = " + id + ";";
-
-
-
 	        stmt = connection.createStatement();
 	        ResultSet rs = stmt.executeQuery(queryString);
-
-	        // if (stmt != null) { stmt.close(); }
             rs.next();
 	        return rs.getInt("seats_remaining");
 	    } catch (SQLException e) {

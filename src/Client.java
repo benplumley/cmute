@@ -18,7 +18,6 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 	private static int portNumber = 55511;
 	private Map map = new Map();
     private ClientConnection connection;
-    // private FakeServer connection; // TODO change to real server connection before final system
     private Boolean isToUni = false;
     private Boolean newListing = false;
     private DateTime dateAndTime = new DateTime((new Date()).getTime());
@@ -59,9 +58,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 	public void run() {
 		setupFrame();
         connection = new ClientConnection(hostname, portNumber, this);
-		// connection = new FakeServer(); // TODO change to real server connection before final system
         updateRides();
-
 	}
 
 	private void setupFrame() {
@@ -189,9 +186,11 @@ public class Client extends JPanel implements ActionListener, MouseListener,
             // get the ride associated with the pin the user clicked
             book(rideSelected);
         } else if ((source instanceof JLayeredPane) && newListing) {
+            // the user picked a location for a new ride
             MapPoint location = new MapPoint(e.getX(), e.getY());
             locationChosen(location);
         } else if ((source instanceof Pin) && newListing) {
+            // the user re-selected the same point for their new ride
             Ride ride = ((Pin) e.getSource()).getRide();
             MapPoint location = ride.getLocation();
             locationChosen(location);
@@ -207,6 +206,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
         timeTolerance = (int)toleranceSlider.getValue();
         toleranceLabel.setText("\u00B1" + timeTolerance + "m");
         if (!toleranceSlider.getValueIsAdjusting()) {
+            // don't send requests to the server until the user is done
             SpinnerModel dateModel = dateSpinner.getModel();
             updateDateTime(((SpinnerDateModel)dateModel).getDate());
             updateRides();
@@ -222,7 +222,8 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 
     private void updateMap() {
         for (Component oldPin : mapView.getComponentsInLayer(1)) {
-            mapView.remove(mapView.getIndexOf(oldPin)); // remove all old pins from the panel
+            mapView.remove(mapView.getIndexOf(oldPin));
+            // remove all old pins from the panel
         }
         mapView.repaint();
         if (currentRides != null) {
@@ -266,7 +267,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
 
     private void createNewListing() {
         toggleListingButtons(false);
-        currentRides = new Ride[0];
+        currentRides = new Ride[0]; // show the user a blank map
         updateMap();
         newListingButton.setText("Cancel");
     }
@@ -348,9 +349,8 @@ public class Client extends JPanel implements ActionListener, MouseListener,
     public void handleMessage(MessageObject message) {
         if (message.isError()) {
             JOptionPane.showMessageDialog(this, message.getMyDescription());
-        } else {
-            //TODO how to handle non-error messages
         }
+        // all non-error messages are for debugging only
     }
 
 }
