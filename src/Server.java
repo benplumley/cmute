@@ -110,9 +110,7 @@ public class Server {
 
 		switch(in.getMyPurpose()){
 
-		case RIDE_BOOKING: //TODO test this SQL
-
-			System.out.println("Booking ride");
+		case RIDE_BOOKING:
 
             int bookingUUID = ((BookRide) in).getUUID();
             int currentSeatsRemaining = getSeatsRemaining(bookingUUID);
@@ -122,8 +120,6 @@ public class Server {
                 "UPDATE rides_bjp36" +
                 " SET seats_remaining=" + (currentSeatsRemaining - 1) +
                 " WHERE UUID=" + bookingUUID;
-
-                System.out.println(bookingString);
     			try {
     				pstmt = connection.prepareStatement(bookingString);
     				pstmt.executeUpdate();
@@ -138,10 +134,8 @@ public class Server {
             }
 			break;
 
-		case NEW_RIDE: //TODO test this SQL. Are the values in the right format, eg how does JDBC expect a Boolean?
+		case NEW_RIDE:
             Ride listing = ((NewRide) in).getRide();
-
-            System.out.println("Posting ride:" + listing.getReadableDescription());
 
             String listingString =
             "INSERT INTO rides_bjp36" +
@@ -166,7 +160,6 @@ public class Server {
 				connection.commit();
 				pstmt.close();
 			} catch (SQLException e) {
-				System.out.println("Unable to post new ride");
 				throw new ServerSideException(MessageContent.NEW_RIDE_FAILURE, "Unable to post ride");
 			}
 			break;
@@ -194,7 +187,6 @@ public class Server {
 
 
 	        ResultSet rs = stmt.executeQuery(queryString);
-	        System.out.println("Results retrieved for client!");
 
 	        if(!rs.isBeforeFirst()){
 	        	//Empty result set

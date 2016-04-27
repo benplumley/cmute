@@ -25,7 +25,7 @@ public class ServerClientThread implements Runnable {
 
 		} catch (IOException e) {
             System.err.println(e.getMessage());
-            this.close();
+            // this.close();
 		}
 	}
 
@@ -38,19 +38,12 @@ public class ServerClientThread implements Runnable {
 			while((input = (ProtocolObject) in.readObject()) != null){
 
 
-				System.out.println("Received object from client");
-
-
 				if(input.isMessage()){
-					System.out.println("Received message from client");
-
 					//A message has been recieved
 					//Probably (hopefully) just notification that client is quitting
 					this.handleMessage((MessageObject) input);
 
 				} else {
-					System.out.println("Received CTS object from client");
-
 					//A request of some form has been made handle it
 					this.handleCTSObject((ClientToServer) input);
 				}
@@ -60,18 +53,10 @@ public class ServerClientThread implements Runnable {
 		} catch (ClassNotFoundException eClass) {
 			this.sendMessageToClient(MessageContent.COMMUNICATION_ERROR, "Invalid object recieved");
 			//Send error message to client. Just in case.
-		} catch (IOException eIO) {
-			eIO.printStackTrace();
-		} finally {
-			this.close();
-		}
+		} catch (IOException eIO) {}
 	}
 
-	public void run() {
-        System.out.println("Thread running");
-
-
-	}
+	public void run() {}
 
 	public void close(){
 		try {
@@ -90,13 +75,13 @@ public class ServerClientThread implements Runnable {
 		switch(inMessage.getMessage()){
 
 		case CLIENT_QUIT:
-			System.out.println("Client quiting");
+			System.out.println("Client disconnected");
 			this.close();
 
 		default:
-			sendMessageToClient(MessageContent.COMMUNICATION_ERROR, "You sent a bad message???");
-			System.err.println("ServerClientThread error");
-			System.err.println(inMessage.getMyDescription());
+			// sendMessageToClient(MessageContent.COMMUNICATION_ERROR, "A connection error occurred");
+			// System.err.println("ServerClientThread error: " + inMessage.getMyDescription());
+			// System.err.println(inMessage.getMyDescription());
 			break;
 
 		}
@@ -143,14 +128,12 @@ public class ServerClientThread implements Runnable {
 
 
 	private void sendMessageToClient(MessageContent messageContent, String messageDescription) {
-		System.out.println("Sending message to client: " + messageDescription);		
 		sendOutput(new MessageObject(
 				messageContent,
 				messageDescription));
 	}
 
 	private void sendOutput(ProtocolObject objectToSend) {
-		System.out.println("Sending object to client");		
 		try {
 			out.writeObject(objectToSend);
 			out.flush();

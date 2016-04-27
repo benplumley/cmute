@@ -43,11 +43,17 @@ public class Client extends JPanel implements ActionListener, MouseListener,
             }
         }
 		Client client = new Client();
+
 	}
 
 	public Client() {
 		Thread thread = new Thread(this);
         thread.start();
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            public void run() {
+                connection.close();
+            }
+        }, "Shutdown-thread"));
 	}
 
 	public void run() {
@@ -55,6 +61,7 @@ public class Client extends JPanel implements ActionListener, MouseListener,
         connection = new ClientConnection(hostname, portNumber, this);
 		// connection = new FakeServer(); // TODO change to real server connection before final system
         updateRides();
+
 	}
 
 	private void setupFrame() {

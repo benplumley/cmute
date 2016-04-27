@@ -94,7 +94,6 @@ public class ClientConnection {
                 break;
             }
             if (responseMessage.isMessage()) { // the server returned an error
-                System.out.println(responseMessage.getMyDescription());
                 if (responseMessage.getMessage() == MessageContent.NEW_RIDE_CONFIRMATION) {
                     return true;
                 } else {
